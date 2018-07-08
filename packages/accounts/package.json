@@ -24,7 +24,8 @@
     "cross-env": "^5.2.0",
     "faker": "^4.1.0",
     "nodemon": "^1.17.5",
-    "npx": "^10.2.0"
+    "npx": "^10.2.0",
+    "zscripts": "^0.1.1"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",

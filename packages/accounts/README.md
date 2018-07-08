@@ -3,6 +3,8 @@ Authentication && Authorisation MicroService
 
 ## Operating
 
+Work in progress
+
 ## Usage
 
 ### REST API
@@ -58,6 +60,13 @@ curl -vv http://localhost:4000/api/v1/users/1
 ```
 
 ## Development
+
+### Requirements
+You should have the following software installed on your machine:
+- Git
+- Node.js
+- Yarn
+- Docker
 
 ### Getting Started
 1. Clone this repository

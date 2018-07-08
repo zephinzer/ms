@@ -1,0 +1,18 @@
+0 silly input [ 'zsc' ]
+1 silly flags { _: [ 'add' ],
+1 silly flags   'reject-cycles': false,
+1 silly flags   rejectCycles: false,
+1 silly flags   dev: true,
+1 silly flags   D: true,
+1 silly flags   args: [ 'zsc' ] }
+2 verbose rootPath /home/z/Projects/annams
+3 info version 2.11.0
+4 silly isInitialized
+5 silly isInitialized true
+6 silly existsSync /home/z/Projects/annams/VERSION
+7 info versioning independent
+8 silly initialize attempt
+9 error initialize callback with error
+10 error Error: Package `zsc` doesn't exist
+10 error     at got.then.catch.err (/home/z/.nvm/versions/node/v8.11.1/lib/node_modules/lerna/node_modules/package-json/index.js:62:11)
+10 error     at <anonymous>
