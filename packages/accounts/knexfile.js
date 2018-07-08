@@ -9,6 +9,7 @@ module.exports = {
     user:     'user', //config.get('databaseUser'),
     password: 'password', //config.get('databasePassword'),
   },
+  debug: true,
   pool: {
     min: 2,
     max: 10

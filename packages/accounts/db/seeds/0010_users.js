@@ -10,14 +10,14 @@ module.exports = {
 };
 
 function generateFakeUser(id) {
-  const email = faker.internet.email();
   const firstName = faker.name.firstName();
   const middleName = faker.name.firstName();
   const lastName = faker.name.lastName();
+  const email = faker.internet.email(firstName, lastName);
   return {
     id,
     email,
-    phone: faker.phone.phoneNumber(),
+    phone: faker.phone.phoneNumber('(###)###-####'),
     username: faker.internet.userName(firstName, lastName),
     // the password is the email
     password: utils.generateHash(email),
