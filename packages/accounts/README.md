@@ -20,14 +20,21 @@ Authentication && Authorisation MicroService
 | PATCH | /users/:userId/:fieldName | Updates the field :fieldName of the user with ID :user Id |
 | DELETE | /users/:userId | Deletes the user with ID :userId |
 
-#### /api/v1/users/:userId
+#### `/api/v1/users/:userId`
 ##### URL Parameters
 | URL Parameter | Description |
 | --- | --- |
-| userId | ID of the user as in `\`users\`.\`id` |
+| userId | ID of the user as in `users.id` |
 
 ##### Query Parameters
 None.
+
+##### Response Codes
+| HTTP Code | Description |
+| --- | --- |
+| 200 | Successfully retrieved user |
+| 404 | Specified user ID not found |
+| 500 | All other possible outcomes |
 
 ##### Example Query
 ```bash
@@ -49,9 +56,33 @@ curl -vv http://localhost:4000/api/v1/users/1
   "updated_at": "2018-07-08T00:06:28.000Z"
 }
 ```
-##### Response Codes
-| HTTP Code | Description |
-| --- | --- |
-| 200 | Successfully retrieved user |
-| 404 | Specified user ID not found |
-| 500 | All other possible outcomes |
+
+## Development
+
+### Getting Started
+1. Clone this repository
+  - `git clone https://github.com/zephinzer/ms.git zephinzer-ms`
+2. Go to the `accounts` package
+  - `cd zephinzer-ms/packages/accounts`
+3. Install dependencies
+  - `yarn`
+4. Create supporting service instances
+  - `npm run provision`
+5. Run migrations
+  - `npm run migrations`
+6. Run seeds
+  - `npm run seeds`
+7. Start application in development
+  - `npm run dev`
+
+### Debugging
+#### Get a shell into the MySQL database
+```sh
+npm run db-exec
+```
+
+### Building
+Work in progress
+
+## License
+This software is licensed under the MIT license. See [LICENSE](./LICENSE) for details.
