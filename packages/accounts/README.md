@@ -17,10 +17,10 @@ Work in progress
 | --- | --- | --- | --- |
 | GET | /users | Retrieve users from database | [✅](#apiv1users) |
 | GET | /users/:userId | Retrieve user with ID :userId from database | [✅](#apiv1usersuserid) |
-| POST | /users | Create a new user |
-| PUT | /users/:userId | Updates an existing user with ID :userId |
-| PATCH | /users/:userId/:fieldName | Updates the field :fieldName of the user with ID :user Id |
-| DELETE | /users/:userId | Deletes the user with ID :userId |
+| POST | /users | Create a new user | ❌ |
+| PUT | /users/:userId | Updates an existing user with ID :userId | ❌ |
+| PATCH | /users/:userId/:fieldName | Updates the field :fieldName of the user with ID :user Id | ❌ |
+| DELETE | /users/:userId | Deletes the user with ID :userId | ❌ |
 
 #### `/api/v1/users/`
 ##### URL Parameters
