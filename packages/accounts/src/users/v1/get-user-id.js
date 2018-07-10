@@ -1,4 +1,4 @@
-import db from '../../sessions';
+import db from '../../db';
 
 const TABLE_USERS = 'users as u';
 const TABLE_IMAGES = 'images as i';
