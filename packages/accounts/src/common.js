@@ -15,12 +15,16 @@ export default {
     (responseHandler, additionalProperties) => (
       (results) => {
         if (results instanceof Array) {
-          responseHandler.status(CODE_OK).json({
-            data: results,
-            count: results.length,
-            timestamp: (new Date()).toISOString(),
-            ...additionalProperties,
-          });
+          if (results.length === 0) {
+            responseHandler.status(CODE_NOT_FOUND).send();
+          } else {
+            responseHandler.status(CODE_OK).json({
+              data: results,
+              count: results.length,
+              timestamp: (new Date()).toISOString(),
+              ...additionalProperties,
+            });
+          }
         } else {
           responseHandler.status(CODE_SERVER_ERROR).json(
             createErrorHandler(

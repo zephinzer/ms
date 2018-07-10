@@ -13,14 +13,70 @@ Work in progress
 
 ##### Users
 
-| Method | Path | Description | Link |
+| Method | Path | Description | Done? |
 | --- | --- | --- | --- |
-| GET | /users | Retrieve users from database |
-| GET | /users/:userId | Retrieve user with ID :userId from database | [-->](#apiv1usersuserid) |
+| GET | /users | Retrieve users from database | [✅](#apiv1users) |
+| GET | /users/:userId | Retrieve user with ID :userId from database | [✅](#apiv1usersuserid) |
 | POST | /users | Create a new user |
 | PUT | /users/:userId | Updates an existing user with ID :userId |
 | PATCH | /users/:userId/:fieldName | Updates the field :fieldName of the user with ID :user Id |
 | DELETE | /users/:userId | Deletes the user with ID :userId |
+
+#### `/api/v1/users/`
+##### URL Parameters
+None.
+
+##### Query Parameters
+| Parameter | Description |
+| --- | --- |
+| offset | User's numerical index to start retrieving users from |
+| limit | Number of users to return |
+
+##### Response Codes
+| HTTP Code | Description |
+| --- | --- |
+| 200 | Successfully retrieved users |
+| 404 | No more users left to retrieve |
+| 500 | All other possible outcomes |
+
+##### Example Query
+```bash
+curl -vv -X GET "http://localhost:4000/api/v1/users?offset=0&limit=2";
+```
+
+##### Example Response
+```json
+{
+  "data": [
+    {
+      "uuid": "d1551e4d-8285-11e8-ac8e-0242ac130002",
+      "email": "Arlie_Moen@gmail.com",
+      "username": "Arlie.Moen",
+      "nameFull": "Arlie Lulu Moen",
+      "nameFirst": "Arlie",
+      "nameLast": "Moen",
+      "imageUri": "https://picsum.photos/128/128?image=588",
+      "createdAt": "2018-07-08T00:06:28.000Z",
+      "updatedAt": "2018-07-08T00:06:28.000Z"
+    },
+    {
+      "uuid": "d15521a7-8285-11e8-ac8e-0242ac130002",
+      "email": "Brannon.Rice@yahoo.com",
+      "username": "Brannon60",
+      "nameFull": "Brannon Shaylee Rice",
+      "nameFirst": "Brannon",
+      "nameLast": "Rice",
+      "imageUri": "https://picsum.photos/128/128?image=677",
+      "createdAt": "2018-07-08T00:06:28.000Z",
+      "updatedAt": "2018-07-08T00:06:28.000Z"
+    }
+  ],
+  "count": 2,
+  "timestamp": "2018-07-10T10:17:07.772Z",
+  "offset": 0,
+  "limit": 2
+}
+```
 
 #### `/api/v1/users/:userId`
 ##### URL Parameters
@@ -40,7 +96,7 @@ None.
 
 ##### Example Query
 ```bash
-curl -vv http://localhost:4000/api/v1/users/1
+curl -vv -X GET "http://localhost:4000/api/v1/users/1"
 ```
 ##### Example Response
 ```json
@@ -48,14 +104,14 @@ curl -vv http://localhost:4000/api/v1/users/1
   "uuid": "d1551e4d-8285-11e8-ac8e-0242ac130002",
   "email": "Arlie_Moen@gmail.com",
   "username": "Arlie.Moen",
-  "name_full": "Arlie Lulu Moen",
-  "name_first": "Arlie",
-  "name_last": "Moen",
-  "name_middle": "Lulu",
+  "nameFull": "Arlie Lulu Moen",
+  "nameFirst": "Arlie",
+  "nameLast": "Moen",
+  "nameMiddle": "Lulu",
   "description": "Nihil accusantium tenetur alias enim qui pariatur. Animi voluptas dolores et. Amet nihil aut incidunt. Non et doloremque. Et alias minus est.\n \rRatione amet ipsum natus occaecati aspernatur similique. Aperiam libero debitis explicabo rerum est. Praesentium voluptatem nesciunt et.\n \rFacilis voluptas tenetur est nihil autem illo ratione velit numquam. At voluptatem ab. Nostrum earum ratione. Perferendis soluta et corporis aut corporis quia praesentium architecto dolorem.",
-  "image_uri": "https://picsum.photos/128/128?image=588",
-  "created_at": "2018-07-08T00:06:28.000Z",
-  "updated_at": "2018-07-08T00:06:28.000Z"
+  "imageUri": "https://picsum.photos/128/128?image=588",
+  "createdAt": "2018-07-08T00:06:28.000Z",
+  "updatedAt": "2018-07-08T00:06:28.000Z"
 }
 ```
 

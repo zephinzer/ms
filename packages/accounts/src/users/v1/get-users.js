@@ -9,14 +9,12 @@ const FIELDS_TO_RETRIEVE = [
   'u.uuid',
   'u.email',
   'u.username',
-  'u.name_full',
-  'u.name_first',
-  'u.name_last',
-  'u.name_middle',
-  'u.description',
-  'i.uri as image_uri',
-  'u.created_at',
-  'u.updated_at',
+  'u.name_full as nameFull',
+  'u.name_first as nameFirst',
+  'u.name_last as nameLast',
+  'i.uri as imageUri',
+  'u.created_at as createdAt',
+  'u.updated_at as updatedAt',
 ];
 
 /**
