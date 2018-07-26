@@ -1,16 +1,5 @@
 {
-	"scripts": {
-		"accounts": "cd packages/accounts"
-	},
 	"devDependencies": {
-		"@babel/core": "^7.0.0-beta.51",
-		"@babel/node": "^7.0.0-beta.51",
 		"lerna": "^2.11.0"
-	},
-	"dependencies": {
-		"body-parser": "^1.18.3",
-		"express": "^4.16.3",
-		"knex": "^0.14.6",
-		"mysql2": "^1.5.3"
 	}
 }
