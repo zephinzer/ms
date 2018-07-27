@@ -1,9 +1,0 @@
-{
-  "extends": [
-    "gts/tslint.json",
-    "tslint-eslint-rules"
-  ],
-  "rules": {
-    "ter-max-len": 80
-  }
-}

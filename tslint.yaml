@@ -1,0 +1,7 @@
+extends:
+  - "gts/tslint.json"
+rules:
+  max-line-length:
+    options:
+      limit: 80
+      severity: warn

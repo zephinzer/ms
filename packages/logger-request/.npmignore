@@ -1,5 +1,4 @@
 node_modules
-provisioning
 src
 *.log
 tsconfig.json
