@@ -1,0 +1,110 @@
+# `@usvc/logger-application`
+An application-level logger using Winston under the hood.
+
+## Scope
+
+## Installation
+
+```bash
+npm i @usvc/logger-application;
+// OR
+yarn add @usvc/logger-application;
+```
+
+## Usage
+
+```js
+// es5:
+const logger = require('@usvc/logger-application');
+// es6:
+import logger from '@usvc/logger-application';
+```
+
+### Basic
+
+```js
+// require it as per ^
+logger.init();
+logger.info('hi');
+```
+
+### Full Configuraiton
+
+```js
+// require it as per ^
+logger.init({
+  id: 'logger_id',
+  formats: [],
+  setPrimary: false,
+  levels: {
+    rant: 3,
+    talk: 2,
+    shout: 1,
+    scream: 0,
+  },
+  level: 'rant',
+  transports: [logger.createConsoleTransport()],
+});
+logger.info('hi');
+```
+
+## API
+
+### `.init(:options)`
+Initialises a logger but does not return it. When running for the first time, this logger will be the default when you do `logger.info(...)`. To access a logger with an ID, use `logger.use('id').info(...)`. 
+
+`.init` takes in an object for the `:options` with the keys as follows:
+
+**Parameters**
+
+| Key | Defaults To | Description |
+| --- | --- | --- |
+| `id` | `"instance"` | Id of the logger |
+| `formats` | `[]` | An array of Winston transport formatters |
+| `setPrimary` | `false` | Defines whether the `logger` object should take on keys corresponding to the levels of the newly defined logger |
+| `levels` | `{silly:5000,debug:4000,info:3000,http:2000,warn:1000,error:0}` | Levels of the logger |
+| `level` | `"silly"` | Level of the logger |
+| `transports` | `[]` | An array of Winston transport objects |
+
+### `.createConsoleTransport()`
+Creates a `winston.transports.Console` transport object. Use this transport in the `transports` property of the `.init()` method.
+
+### `.createFluentTransport()`
+Creates a transport object capable of sending logs to a FluentD service. Uses `fluent-logger` under the hood. Use this transport in the `transports` property of the `.init()` method.
+
+**Parameters**
+
+| Key | Defaults To | Description |
+| --- | --- | --- |
+| `id` | `"fluent"` | ID of the logger to appear in FluentD |
+| `host` | `"localhost"` | Hostname of the FluentD service |
+| `port` | `24224` | Port of the FluentD servie |
+| `requireAckResponse` | `false` | Determines if we should wait for an ACK by the FluentD service |
+| `security` | `{}` | Defines possible security parameters. See below for details |
+| `timeout` | `3.0` | Defines the timeout for the FluentD service |
+| `tls` | `false` | Determines if TLS should be used |
+| `tlsOptions` | `{}` | Options for TLS if `tls` is `true` |
+
+See [https://github.com/fluent/fluent-logger-node#options](https://github.com/fluent/fluent-logger-node#options) for more information. We use a subset of their configurations.
+
+### `.createZipkinContextFormatter()`
+Creates a formatter which injects the Zipkin context into every log if it is available. Use this formatter in the `formats` property of the `.init()` method.
+
+| Key | Defaults To | Description |
+| --- | --- | --- |
+| `loggerId` | `null` | The logger ID to be attached to the log object. **REQUIRED** |
+| `context` | `null` | The context used for the formatter. This needs to be an `ExplicitContext`. |
+
+## Examples
+- [Usage with ES5 (`require`s)](./example/es5)
+- [Usage with ES6 (`import`s)](./example/es6)
+- [FluentD example](./example/fluentd)
+- [Zipkin context example](./example/zipkin)
+
+## Development
+
+`COMING SOON`
+
+## Changelog
+
+`COMING SOON`

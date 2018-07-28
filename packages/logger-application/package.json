@@ -8,7 +8,15 @@
     "clean": "rm -rf ./dist/*",
     "lint": "tslint --config ../../tslint.yaml --project .",
     "test": "mocha --require ts-node/register \"./src/*.test.ts\" \"./src/**/*.test.ts\"",
-    "test:watch": "npm run test -- --watch --watch-extensions ts"
+    "test:watch": "npm run test -- --watch --watch-extensions ts",
+    "preeg:es5": "npm run build",
+    "preeg:es6": "npm run build",
+    "preeg:fluentd": "npm run build && docker-compose -f ./example/fluentd/docker-compose.yml up -d",
+    "preeg:zipkin": "npm run build && docker-compose -f ./example/zipkin/docker-compose.yml up -d",
+    "eg:es5": "node example/es5/index.js",
+    "eg:es6": "babel-node --presets @babel/env example/es6/index.js",
+    "eg:fluentd": "node example/fluentd/index.js",
+    "eg:zipkin": "node example/zipkin/index.js"
   },
   "publishConfig": {
     "access": "public"
@@ -17,16 +25,23 @@
   "author": "zephinzer",
   "license": "MIT",
   "dependencies": {
+    "fluent-logger": "^3.0.0",
     "winston": "^3.0.0",
-    "winston-transport": "^4.2.0"
+    "winston-transport": "^4.2.0",
+    "zipkin": "^0.13.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0-beta.54",
+    "@babel/node": "^7.0.0-beta.54",
+    "@babel/preset-env": "^7.0.0-beta.54",
     "@types/sinon": "^5.0.1",
     "@types/sinon-chai": "^3.2.0",
+    "babel-cli": "^6.26.0",
     "chai": "^4.1.2",
+    "express": "^4.16.3",
     "mocha": "^5.2.0",
     "sinon": "^6.1.4",
     "sinon-chai": "^3.2.0",
-    "zipkin": "^0.13.0"
+    "superagent": "^3.8.3"
   }
 }
