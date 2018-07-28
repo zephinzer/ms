@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
 import * as winston from 'winston';
-import logger from './index';
+import logger from './';
 
 chai.use(sinonChai);
 const {expect} = chai;
@@ -33,9 +33,9 @@ describe('@joeir/logger-application', () => {
         setPrimary: true,
         transports: [transport],
       });
-      expect(logger._test).to.exist;
-      expect(logger._test.levels).to.equal(levels);
-      expect(logger._test.level).to.equal(level);
+      expect(logger._instances._test).to.exist;
+      expect(logger._instances._test.levels).to.equal(levels);
+      expect(logger._instances._test.level).to.equal(level);
 
       logger.a(message);
       expect(formatterSpy).to.be.calledOnce;

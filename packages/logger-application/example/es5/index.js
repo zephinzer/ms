@@ -1,3 +1,3 @@
-const logger = require('../../');
+const {logger} = require('../../');
 logger.init();
 logger.info('hi');

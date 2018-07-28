@@ -15,7 +15,7 @@ yarn add @usvc/logger-application;
 
 ```js
 // es5:
-const logger = require('@usvc/logger-application');
+const {logger} = require('@usvc/logger-application');
 // es6:
 import logger from '@usvc/logger-application';
 ```

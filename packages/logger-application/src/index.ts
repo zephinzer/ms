@@ -23,7 +23,7 @@ export const DEFAULT_LEVELS: Levels = {
 
 export const DEFAULT_LEVEL: string = 'info';
 
-const logger: Logger = {
+export const logger: Logger = {
   count: 0,
   createZipkinContextFormatter,
   createConsoleTransport,
@@ -34,8 +34,6 @@ const logger: Logger = {
 };
 
 export default logger;
-// for es5 support
-module.exports = logger;
 
 export function use(id) {
   if (!logger._instances[id]) {
