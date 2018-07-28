@@ -3,20 +3,15 @@
   "version": "0.0.2",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc --project ./tsconfig.json",
+    "build": "tsc --project .",
+    "clean": "rm -rf ./dist/*",
     "lint": "tslint --config ../../tslint.yaml --project .",
     "prestart": "npm run build",
     "start": "ts-node test",
     "pretest": "docker-compose -f ./provisioning/deployment/compose/test.yml up -d",
     "test": "mocha --require ts-node/register \"./src/*.test.ts\" \"./src/**/*.test.ts\"",
     "posttest": "docker-compose -f ./provisioning/deployment/compose/test.yml down",
-    "test": "mocha --require ts-node/register \"./src/*.test.ts\" \"./src/**/*.test.ts\"",
-    "test:watch": "npm run test -- --watch --watch-extensions ts",
-    "check": "gts check",
-    "clean": "gts clean",
-    "compile": "tsc -p .",
-    "fix": "gts fix",
-    "prepare": "npm run compile"
+    "test:watch": "npm run test -- --watch --watch-extensions ts"
   },
   "publishConfig": {
     "access": "public"

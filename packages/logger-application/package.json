@@ -1,10 +1,10 @@
 {
-  "name": "@joeir/logger-request",
-  "version": "0.1.0",
+  "name": "@joeir/logger-application",
+  "version": "0.0.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc --project .",
+    "build": "tsc --project ./tsconfig.json",
     "clean": "rm -rf ./dist/*",
     "lint": "tslint --config ../../tslint.yaml --project .",
     "test": "mocha --require ts-node/register \"./src/*.test.ts\" \"./src/**/*.test.ts\"",
@@ -16,27 +16,22 @@
   "keywords": [],
   "author": "zephinzer",
   "license": "MIT",
+  "dependencies": {
+    "winston": "^3.0.0",
+    "winston-transport": "^4.2.0"
+  },
   "devDependencies": {
-    "@types/chai": "^4.1.4",
-    "@types/express": "^4.16.0",
     "@types/mocha": "^5.2.5",
-    "@types/morgan": "^1.7.35",
-    "@types/node": "^10.5.3",
+    "@types/node": "^10.5.4",
     "@types/sinon": "^5.0.1",
     "@types/sinon-chai": "^3.2.0",
     "chai": "^4.1.2",
-    "express": "^4.16.3",
-    "gts": "^0.8.0",
     "mocha": "^5.2.0",
     "sinon": "^6.1.4",
     "sinon-chai": "^3.2.0",
-    "supertest": "^3.1.0",
     "ts-node": "^7.0.0",
     "tslint": "^5.11.0",
-    "typescript": "^2.9.2"
-  },
-  "dependencies": {
-    "case": "^1.5.5",
-    "morgan": "^1.9.0"
+    "typescript": "^2.9.2",
+    "zipkin": "^0.13.0"
   }
 }

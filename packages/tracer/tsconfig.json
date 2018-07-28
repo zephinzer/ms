@@ -1,23 +1,11 @@
 {
-  "compileOnSave": true,
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "declaration": true,
     "baseUrl": "./",
-    "sourceMap": true,
-    "outDir": "./dist",
-    "lib": [
-      "es5",
-      "es6"
-    ],
-    "target": "es5"
+    "outDir": "./dist"
   },
   "include": [
-    "src/*",
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "src/*.test.ts",
-    "src/**/*.test.ts"
+    "src/**/*",
+    "src/*"
   ]
 }
