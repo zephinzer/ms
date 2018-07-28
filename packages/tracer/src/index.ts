@@ -31,9 +31,10 @@ export type ExpressContextualizedRequestHandler = (
 ) => void;
 
 export interface TracerObjectParameters {
-  sampleRate?: number;
   headers?: object;
   httpTimeout?: number;
+  sampleRate?: number;
+  traceId128Bit?: boolean;
   url?: string;
 }
 
@@ -47,6 +48,7 @@ export function createTracer({
   headers = {},
   httpTimeout = 5.0,
   url = 'http://localhost:9411',
+  traceId128Bit = true,
 }: TracerObjectParameters = {}): TracerObject {
   const ctxImpl = new ExplicitContext();
   const endpoint = `${url}/api/v2/spans`;
@@ -54,7 +56,7 @@ export function createTracer({
   const logger = new HttpLogger({endpoint, headers, httpTimeout, jsonEncoder});
   const recorder = new BatchRecorder({logger});
   const sampler = new CountingSampler(sampleRate);
-  const tracer = new Tracer({ctxImpl, recorder, sampler});
+  const tracer = new Tracer({ctxImpl, recorder, sampler, traceId128Bit});
   const contextProviderMiddleware = getContextProviderMiddleware(ctxImpl);
   const zipkinInstrumentationMiddleware = expressMiddleware({tracer});
 
