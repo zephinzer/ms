@@ -1,6 +1,11 @@
+# standard js stuff
 node_modules
-provisioning
-src
 *.log
+
+# typscript stuff
 tsconfig.json
 tslint.yaml
+
+# custom settings
+example
+src

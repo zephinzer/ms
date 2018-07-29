@@ -3,6 +3,15 @@ An application-level logger using Winston under the hood.
 
 ## Scope
 
+- [x] Application logging with timestamp
+- [x] Allows for custom levels (with level filtering) definition
+- [x] Allows for assigning an ID to the logger
+- [x] Allows for extension of Winston transports
+- [x] Allows for extension of Winston formats
+- [x] Allows for multiple loggers to exist
+- [x] Include FluentD transport for logs centralisation
+- [x] Include Zipkin's B3 propagation format into logger (`spanId`, `parentSpanId`, `traceId`, `sampled`)
+
 ## Installation
 
 ```bash
@@ -111,6 +120,11 @@ Run: `npm run eg:es5` in this directory
 Goto: [Usage with ES6 (`import`s)](./example/es6)
 
 Run: `npm run eg:es6` in this directory
+
+### Usage with multiple loggers
+Goto: [Usage with multiple loggers](./example/multiple)
+
+Run: `npm run eg:multiple` in this directory
 
 ### Usage with FluentD logs collector
 > Docker Compose needs to be installed for this to work
