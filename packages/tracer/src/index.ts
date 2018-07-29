@@ -69,6 +69,15 @@ export function createTracer({
   };
 }
 
+/**
+ * Creates a middleware that attaches a `.context` property
+ * to the Express request object. Compatible with the
+ * `getZipkinTokenizers()` tokenizer generator in the
+ * `@usvc/logger-request` package.
+ *
+ * @param {ExplicitContext} ctxImpl
+ * @return {express.RequestHandler}
+ */
 function getContextProviderMiddleware(
   ctxImpl: ExplicitContext
 ): ExpressContextualizedRequestHandler {
