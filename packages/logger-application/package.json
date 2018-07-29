@@ -55,14 +55,14 @@
   "dependencies": {
     "fluent-logger": "^3.0.0",
     "winston": "^3.0.0",
-    "winston-transport": "^4.2.0",
-    "zipkin": "^0.13.0"
+    "winston-transport": "^4.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.54",
     "@babel/node": "^7.0.0-beta.54",
     "@babel/preset-env": "^7.0.0-beta.54",
     "babel-cli": "^6.26.0",
-    "superagent": "^3.8.3"
+    "superagent": "^3.8.3",
+    "zipkin": "^0.13.0"
   }
 }
