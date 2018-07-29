@@ -16,10 +16,40 @@
   "publishConfig": {
     "access": "public"
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zephinzer/ms.git"
+  },
+  "keywords": [
+    "b3",
+    "b3-propagation",
+    "context",
+    "distributed",
+    "express",
+    "microservices",
+    "middleware",
+    "opentracing",
+    "open-tracing",
+    "request",
+    "sampled",
+    "span-id",
+    "trace",
+    "trace-id",
+    "tracer",
+    "tracing",
+    "usvc",
+    "zipkin"
+  ],
   "author": "zephinzer",
+  "contributors": [
+    {
+      "email": "dev@joeir.net",
+      "name": "joseph",
+      "url": "https://github.com/zephinzer"
+    }
+  ],
   "license": "MIT",
-  "description": "",
+  "description": "Distributed trace management package using Zipkin for use in an Express application.",
   "devDependencies": {
     "@types/express": "^4.16.0",
     "chai": "^4.1.2",
