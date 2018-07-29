@@ -2,10 +2,10 @@ import * as express from 'express';
 import {
   BatchRecorder,
   ExplicitContext,
-  Tracer,
   jsonEncoder,
-  sampler,
   option,
+  sampler,
+  Tracer,
 } from 'zipkin';
 import {HttpLogger} from 'zipkin-transport-http';
 import {expressMiddleware} from 'zipkin-instrumentation-express';
@@ -27,7 +27,7 @@ export interface ExpressContextualizedRequest extends express.Request {
 export type ExpressContextualizedRequestHandler = (
   req: ExpressContextualizedRequest,
   res: express.Response,
-  next: express.NextFunction
+  next: express.NextFunction,
 ) => void;
 
 export interface TracerObjectParameters {
@@ -52,11 +52,15 @@ export function createTracer({
 }: TracerObjectParameters = {}): TracerObject {
   const ctxImpl = new ExplicitContext();
   const endpoint = `${url}/api/v2/spans`;
-  const jsonEncoder = JSON_V2;
-  const logger = new HttpLogger({endpoint, headers, httpTimeout, jsonEncoder});
+  const jsonEncoderInstance = JSON_V2;
+  const logger = new HttpLogger(
+    {endpoint, headers, httpTimeout, jsonEncoder: jsonEncoderInstance},
+  );
   const recorder = new BatchRecorder({logger});
-  const sampler = new CountingSampler(sampleRate);
-  const tracer = new Tracer({ctxImpl, recorder, sampler, traceId128Bit});
+  const samplerInstance = new CountingSampler(sampleRate);
+  const tracer = new Tracer(
+    {ctxImpl, recorder, sampler: samplerInstance, traceId128Bit},
+  );
   const contextProviderMiddleware = getContextProviderMiddleware(ctxImpl);
   const zipkinInstrumentationMiddleware = expressMiddleware({tracer});
 
@@ -79,7 +83,7 @@ export function createTracer({
  * @return {express.RequestHandler}
  */
 function getContextProviderMiddleware(
-  ctxImpl: ExplicitContext
+  ctxImpl: ExplicitContext,
 ): ExpressContextualizedRequestHandler {
   return (req, res, next) => {
     const {traceId, parentId, spanId, sampled} = ctxImpl.getContext();
