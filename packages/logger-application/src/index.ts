@@ -4,13 +4,13 @@ import {ExplicitContext} from 'zipkin';
 import * as fluentLogger from 'fluent-logger';
 import {TransformFunction} from 'logform';
 
-const FluentTransport = fluentLogger.support.winstonTransport();
+const fluentTransport = fluentLogger.support.winstonTransport();
 
 export interface Levels {
   [key: string]: number;
 }
 
-export const DEFAULT_ID: string = 'instance';
+export const DEFAULT_ID = 'instance';
 
 export const DEFAULT_LEVELS: Levels = {
   silly: 5000,
@@ -21,7 +21,7 @@ export const DEFAULT_LEVELS: Levels = {
   error: 0,
 };
 
-export const DEFAULT_LEVEL: string = 'info';
+export const DEFAULT_LEVEL = 'info';
 
 export const logger: Logger = {
   count: 0,
@@ -29,11 +29,9 @@ export const logger: Logger = {
   createConsoleTransport,
   createFluentTransport,
   init: initialize,
-  use: use,
+  use,
   _instances: {},
 };
-
-export default logger;
 
 export function use(id) {
   if (!logger._instances[id]) {
@@ -66,7 +64,7 @@ export function createFluentTransport({
   tls = DEFAULT_FLUENT_TLS,
   tlsOptions = DEFAULT_FLUENT_TLS_OPTIONS,
 }: CreateFluentTransportParameters = {}): Transport {
-  return new FluentTransport({
+  return new fluentTransport({
     tag: id,
     host,
     port,
@@ -132,7 +130,10 @@ function initialize({
   }
   if (logger.count++ === 0 || setPrimary === true) {
     Object.keys(levels)
-      .forEach((levelKey) => logger[levelKey] = logger._instances[id][levelKey]);
+      .forEach(
+        (levelKey) =>
+          logger[levelKey] = logger._instances[id][levelKey]
+      );
   }
 }
 
@@ -151,6 +152,8 @@ export interface Logger {
   count: number;
   init: Initialize;
   _instances: LoggerInstance;
+  // logger should be able to handle any key thrown at it
+  // tslint:disable-next-line no-any
   [key: string]: any;
 }
 
@@ -164,7 +167,7 @@ export interface Plugins {
 }
 
 export interface FluentLoggerTlsOptions {
-  [key: string]: any;
+  ca?: Buffer | string;
 }
 
 export interface FluentLoggerSecurity {
@@ -191,7 +194,7 @@ export interface CreateZipkinContextFormatter {
 }
 
 export interface RawExplicitContext {
-  spanId: string,
+  spanId: string;
   parentId: string;
   traceId: string;
   sampled: Symbol | boolean;

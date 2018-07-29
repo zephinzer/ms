@@ -13,9 +13,10 @@
     "preeg:es6": "npm run build",
     "preeg:multiple": "npm run build",
     "preeg:fluentd": "npm run build && docker-compose -f ./example/fluentd/docker-compose.yml up -d",
+    "posteg:fluentd": "docker logs $(docker ps | grep fluentd | cut -f 1 -d ' ') && docker-compose -f ./example/fluentd/docker-compose.yml down",
     "preeg:zipkin": "npm run build && docker-compose -f ./example/zipkin/docker-compose.yml up -d",
     "eg:es5": "node example/es5/index.js",
-    "eg:es6": "babel-node --presets @babel/env example/es6/index.js",
+    "eg:es6": "babel-node --presets env example/es6/index.js",
     "eg:fluentd": "node example/fluentd/index.js",
     "eg:multiple": "node example/multiple/index.js",
     "eg:zipkin": "node example/zipkin/index.js"

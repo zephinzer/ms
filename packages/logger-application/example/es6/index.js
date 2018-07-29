@@ -1,3 +1,3 @@
-import logger from '../../';
+import {logger} from '../../';
 logger.init();
 logger.info('hi');

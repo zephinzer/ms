@@ -26,7 +26,7 @@ yarn add @usvc/logger-application;
 // es5:
 const {logger} = require('@usvc/logger-application');
 // es6:
-import logger from '@usvc/logger-application';
+import {logger} from '@usvc/logger-application';
 ```
 
 ### Basic
@@ -58,6 +58,7 @@ logger.info('hi');
 ```
 
 ## API
+The following properties are properties belonging to the imported `{logger}`. You could also `import` them as separate functions.
 
 ### `.init(:options)`
 Initialises a logger but does not return it. When running for the first time, this logger will be the default when you do `logger.info(...)`.
