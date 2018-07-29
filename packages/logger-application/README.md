@@ -16,7 +16,7 @@ An application-level logger using Winston under the hood.
 
 ```bash
 npm i @usvc/logger-application;
-// OR
+# OR
 yarn add @usvc/logger-application;
 ```
 
