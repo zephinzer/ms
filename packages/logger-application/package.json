@@ -27,8 +27,29 @@
     "type": "git",
     "url": "https://github.com/zephinzer/ms.git"
   },
-  "keywords": [],
+  "keywords": [
+    "application",
+    "centralised",
+    "collated",
+    "context",
+    "fluent",
+    "fluentd",
+    "log",
+    "logs",
+    "logger",
+    "microservices",
+    "usvc",
+    "winston",
+    "zipkin"
+  ],
   "author": "zephinzer",
+  "contributors": [
+    {
+      "email": "dev@joeir.net",
+      "name": "joseph",
+      "url": "https://github.com/zephinzer"
+    }
+  ],
   "license": "MIT",
   "dependencies": {
     "fluent-logger": "^3.0.0",
