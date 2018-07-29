@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as supertest from 'supertest';
+import * as superagent from 'superagent';
 import {Server} from 'http';
 import * as chai from 'chai';
 import * as sinon from 'sinon';
@@ -25,14 +26,52 @@ describe('@joeir/logger-request', () => {
 
   beforeEach(() => {
     server = express();
-    if (instance) {
-      instance.close();
-    }
   });
 
   afterEach(() => {
+    if (instance) {
+      instance.close();
+    }
     Object.keys(loggerMock).forEach((key) => {
       loggerMock[key].resetHistory();
+    });
+  });
+
+  it('has the correct log paremeters', (done) => {
+    server.use(createRequestLogger({
+      logger: loggerMock, // to validate the logging
+    }));
+    server.get('/', (_req, res) => {
+      res.json('ok');
+    });
+    const instance = server.listen(() => {
+      superagent
+        .get(`http://localhost:${instance.address()['port']}`)
+        .end((err, response) => {
+          expect(loggerMock.info).to.be.calledOnce;
+          expect(loggerMock.info).to.be.calledWith(
+            sinon.match(({
+              level,
+              method,
+              url,
+              status,
+              contentLength,
+              responseTimeMs,
+              httpVersion,
+              userAgent,
+            }) => (
+              level === 'access'
+              && method === 'GET'
+              && url === '/'
+              && status === '200'
+              && contentLength === '4'
+              && httpVersion === '1.1'
+              && !isNaN(parseFloat(responseTimeMs))
+              && (userAgent.match(/^node-superagent/gi) !== null)
+            ))
+          );
+          done();    
+        });
     });
   });
 

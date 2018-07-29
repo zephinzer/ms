@@ -7,41 +7,33 @@ const DEFAULT_HOSTNAME = os.hostname() || process.env.HOSTNAME || 'unknown';
 const DEFAULT_LOGGER = global.console;
 const DEFAULT_LEVEL = 'info';
 
-export interface LoggerInterface {
-[key: string]: any;
-}
-
-export interface ExtendedRequest extends express.Request {
-  [key: string]: any;
-}
-
-export interface ExtendedTokenCallbackFn {
-  (req: ExtendedRequest, res: express.Response): any;
-}
-
-export interface Tokenizer {
-  id: string;
-  fn: ExtendedTokenCallbackFn;
-}
-
-export interface CreateLoggerParameters {
-  additionalTokens?: Tokenizer[];
-  hostname?: string;
-  logger?: LoggerInterface;
-  level?: string;
-}
-
+/**
+ * Boostraps an Express-compatible middleware using Morgan.
+ * Logs will be routed through :logger via the specified :level.
+ * Tokens can be added using :additionalTokens and the :hostname
+ * will be as specified.
+ *
+ * @param {CreateLoggerParameters} params
+ * @param {Tokenizer[]} params.additionalTokens
+ * @param {String} params.hostname
+ * @param {LoggerInterface} params.logger
+ * @param {String} params.level
+ * 
+ * @throws {Error} when the :level` cannot be found in the :logger
+ * 
+ * @return {express.RequestHandler}
+ */
 export function createLogger({
   additionalTokens = [],
   hostname = DEFAULT_HOSTNAME,
   logger = DEFAULT_LOGGER,
   level = DEFAULT_LEVEL,
 }: CreateLoggerParameters = {}): express.RequestHandler {
-  morgan.token('hostname', (req, res) => hostname);
-  // morgan.token('trace-id', (req, res) => req.context.traceId);
-  // morgan.token('span-id', (req, res) => req.context.spanId);
-  // morgan.token('parent-span-id', (req, res) => req.context.parentId);
-  // morgan.token('sampled', (req, res) => req.context.sampled);
+  if (typeof logger[level] !== 'function') {
+    // tslint:disable-next-line max-line-length
+    throw new Error(`The specified level, "${level}", could not be found in the provided :logger.`);
+  }
+  morgan.token('hostname', () => hostname);
   additionalTokens.forEach((token) => {
     morgan.token(token.id, token.fn);
   });
@@ -53,10 +45,6 @@ export function createLogger({
       status: tokens['status'](req, res),
       contentLength: tokens['res'](req, res, 'content-length'),
       responseTimeMs: tokens['response-time'](req, res),
-      // traceId: tokens['trace-id'](req, res),
-      // spanId: tokens['span-id'](req, res),
-      // parentSpanId: tokens['parent-span-id'](req, res),
-      // sampled: tokens['sampled'](req, res),
       httpVersion: tokens['http-version'](req, res),
       referrer: tokens['referrer'](req, res),
       remoteHostname: req['hostname'],
@@ -80,4 +68,58 @@ export function createLogger({
       }
     }
   });
-};
+}
+
+export function getZipkinTokenizers(): Tokenizer[] {
+  return [
+    {
+      id: 'trace-id',
+      fn: (req) => req.context.traceId,
+    },
+    {
+      id: 'span-id',
+      fn: (req) => req.context.spanId,
+    },
+    {
+      id: 'parent-span-id',
+      fn: (req) => req.context.parentId,
+    },
+    {
+      id: 'sampled',
+      fn: (req) => req.context.sampled,
+    },
+  ];
+}
+
+export interface LoggerInterface {
+  // disabled so that loggers have the freedom to implement
+  // any method using any level name
+  //
+  // tslint:disable-next-line no-any
+  [key: string]: any;
+}
+
+export interface ExtendedRequest extends express.Request {
+  // disabling this so that the request object can contain custom
+  // passed-down paremters which is necessary for the zipkin
+  // context to be made available to the logger
+  //
+  // tslint:disable-next-line no-any
+  [key: string]: any;
+}
+
+export interface ExtendedTokenCallbackFn extends morgan.TokenCallbackFn {
+  (req: ExtendedRequest, res: express.Response): boolean | number | string;
+}
+
+export interface Tokenizer {
+  id: string;
+  fn: ExtendedTokenCallbackFn;
+}
+
+export interface CreateLoggerParameters {
+  additionalTokens?: Tokenizer[];
+  hostname?: string;
+  logger?: LoggerInterface;
+  level?: string;
+}
