@@ -51,7 +51,9 @@ logger.info('hi');
 ## API
 
 ### `.init(:options)`
-Initialises a logger but does not return it. When running for the first time, this logger will be the default when you do `logger.info(...)`. To access a logger with an ID, use `logger.use('id').info(...)`. 
+Initialises a logger but does not return it. When running for the first time, this logger will be the default when you do `logger.info(...)`.
+
+> To access a logger with an ID `'id'`, use `logger.use('id').info(...)`. 
 
 `.init` takes in an object for the `:options` with the keys as follows:
 
@@ -67,10 +69,14 @@ Initialises a logger but does not return it. When running for the first time, th
 | `transports` | `[]` | An array of Winston transport objects |
 
 ### `.createConsoleTransport()`
-Creates a `winston.transports.Console` transport object. Use this transport in the `transports` property of the `.init()` method.
+Creates a `winston.transports.Console` transport object.
+
+> Use this transport in the `transports` property of the `.init()` method.
 
 ### `.createFluentTransport()`
-Creates a transport object capable of sending logs to a FluentD service. Uses `fluent-logger` under the hood. Use this transport in the `transports` property of the `.init()` method.
+Creates a transport object capable of sending logs to a FluentD service. Uses `fluent-logger` under the hood.
+
+> Use this transport in the `transports` property of the `.init()` method.
 
 **Parameters**
 
@@ -96,10 +102,33 @@ Creates a formatter which injects the Zipkin context into every log if it is ava
 | `context` | `null` | The context used for the formatter. This needs to be an `ExplicitContext`. |
 
 ## Examples
-- [Usage with ES5 (`require`s)](./example/es5)
-- [Usage with ES6 (`import`s)](./example/es6)
-- [FluentD example](./example/fluentd)
-- [Zipkin context example](./example/zipkin)
+### Usage with ES5
+Goto: [Usage with ES5 (`require`s)](./example/es5)
+
+Run: `npm run eg:es5` in this directory
+
+### Usage with ES6
+Goto: [Usage with ES6 (`import`s)](./example/es6)
+
+Run: `npm run eg:es6` in this directory
+
+### Usage with FluentD logs collector
+> Docker Compose needs to be installed for this to work
+
+Goto: [FluentD example](./example/fluentd)
+
+Run: `npm run eg:fluentd` in this directory
+
+> You can run `docker logs -f $(docker ps | grep fluentd | cut -f 1 -d ' ')` to get the container ID of the FluentD service, and then run `docker logs -f ${CONTAINER_ID}` to see the log. It should like: `2018-07-29 07:42:18.000000000 +0000 _test_fluentd: {"message":"hi","level":"info","timestamp":"2018-07-29T07:42:18.360Z"}`
+
+### Usage with Zipkin context
+> Docker Compose needs to be installed for this to work
+
+Goto: [Zipkin context example](./example/zipkin)
+
+Run: `npm run eg:zipkin` in this directory
+
+> You can go to http://localhost:9411 to see the zipkin trace.
 
 ## Development
 

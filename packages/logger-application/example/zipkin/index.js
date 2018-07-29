@@ -1,7 +1,7 @@
 const express = require('express');
 const superagent = require('superagent');
 const tracer = require('../../../tracer');
-const logger = require('../../');
+const {logger} = require('../../');
 
 const tracerInstance = tracer.createTracer({
   url: 'http://localhost:9411',

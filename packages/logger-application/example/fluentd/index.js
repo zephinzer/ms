@@ -1,4 +1,4 @@
-const logger = require('../../');
+const {logger} = require('../../');
 const id = '_test_fluentd'
 logger.init({
   id,
