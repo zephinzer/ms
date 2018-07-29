@@ -51,7 +51,6 @@
   "license": "MIT",
   "description": "Distributed trace management package using Zipkin for use in an Express application.",
   "devDependencies": {
-    "gts": "^0.8.0",
     "supertest": "^3.1.0"
   },
   "dependencies": {
