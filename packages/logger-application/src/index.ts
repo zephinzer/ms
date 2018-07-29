@@ -1,8 +1,8 @@
-import * as winston from 'winston';
-import * as Transport from 'winston-transport';
 import {ExplicitContext} from 'zipkin';
 import * as fluentLogger from 'fluent-logger';
+import * as Transport from 'winston-transport';
 import {TransformFunction} from 'logform';
+import * as winston from 'winston';
 
 const fluentTransport = fluentLogger.support.winstonTransport();
 
@@ -25,9 +25,9 @@ export const DEFAULT_LEVEL = 'info';
 
 export const logger: Logger = {
   count: 0,
-  createZipkinContextFormatter,
   createConsoleTransport,
   createFluentTransport,
+  createZipkinContextFormatter,
   init: initialize,
   use,
   _instances: {},
@@ -65,11 +65,11 @@ export function createFluentTransport({
   tlsOptions = DEFAULT_FLUENT_TLS_OPTIONS,
 }: CreateFluentTransportParameters = {}): Transport {
   return new fluentTransport({
-    tag: id,
     host,
     port,
     requireAckResponse,
     security,
+    tag: id,
     timeout,
     tls,
     tlsOptions,
@@ -108,7 +108,9 @@ function initialize({
     const pluginFormatters =
       plugins.map((plugin) => winston.format(plugin.format));
     const additionalFormatters =
-      formats.map((format) => winston.format(format));
+      formats.map(
+        (additionalFormatter) => winston.format(additionalFormatter),
+      );
     const baseFormatters = [winston.format.timestamp, winston.format.json];
     const format = winston.format.combine(
       ...additionalFormatters.map((v) => v()),
@@ -123,8 +125,8 @@ function initialize({
     logger._instances[id] = winston.createLogger({
       exitOnError: false,
       format,
-      levels,
       level,
+      levels,
       transports: transporters,
     });
   }
@@ -132,7 +134,7 @@ function initialize({
     Object.keys(levels)
       .forEach(
         (levelKey) =>
-          logger[levelKey] = logger._instances[id][levelKey]
+          logger[levelKey] = logger._instances[id][levelKey],
       );
   }
 }
