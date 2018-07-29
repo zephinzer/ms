@@ -9,7 +9,7 @@ describe('@joeir/tracer', () => {
 
   beforeEach(() => {
     tracer = createTracer({
-      url: 'http://localhost:29411'
+      url: 'http://localhost:9411'
     });
   });
 

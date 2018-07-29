@@ -5,4 +5,4 @@ services:
       driver: none
     image: openzipkin/zipkin:2.10.2
     ports:
-      - "29411:9411"
+      - "9411:9411"

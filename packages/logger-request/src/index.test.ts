@@ -70,6 +70,7 @@ describe('@joeir/logger-request', () => {
               && (userAgent.match(/^node-superagent/gi) !== null)
             ))
           );
+          instance.close();
           done();    
         });
     });
