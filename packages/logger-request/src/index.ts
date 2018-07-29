@@ -1,7 +1,7 @@
+import * as Case from 'case';
 import * as express from 'express';
 import * as morgan from 'morgan';
 import * as os from 'os';
-import * as Case from 'case';
 
 const DEFAULT_HOSTNAME = os.hostname() || process.env.HOSTNAME || 'unknown';
 const DEFAULT_LOGGER = global.console;
@@ -18,9 +18,9 @@ const DEFAULT_LEVEL = 'info';
  * @param {String} params.hostname
  * @param {LoggerInterface} params.logger
  * @param {String} params.level
- * 
+ *
  * @throws {Error} when the :level` cannot be found in the :logger
- * 
+ *
  * @return {express.RequestHandler}
  */
 export function createLogger({
@@ -39,23 +39,23 @@ export function createLogger({
   });
   return morgan((tokens, req, res) => {
     const message = {
+      contentLength: tokens['res'](req, res, 'content-length'),
+      httpVersion: tokens['http-version'](req, res),
       level: 'access',
       method: tokens['method'](req, res),
-      url: tokens['url'](req, res),
-      status: tokens['status'](req, res),
-      contentLength: tokens['res'](req, res, 'content-length'),
-      responseTimeMs: tokens['response-time'](req, res),
-      httpVersion: tokens['http-version'](req, res),
       referrer: tokens['referrer'](req, res),
-      remoteHostname: req['hostname'],
       remoteAddress: tokens['remote-addr'](req, res),
+      remoteHostname: req['hostname'],
+      responseTimeMs: tokens['response-time'](req, res),
       serverHostname: tokens['hostname'](req, res),
+      status: tokens['status'](req, res),
       time: tokens['date'](req, res, 'iso'),
+      url: tokens['url'](req, res),
       userAgent: tokens['user-agent'](req, res),
     };
     additionalTokens.forEach((token) => {
       const messageKey = Case.camel(token.id);
-      if (!message[messageKey]) { 
+      if (!message[messageKey]) {
         message[messageKey] = tokens[token.id](req, res);
       }
     });
@@ -65,28 +65,28 @@ export function createLogger({
       write: (_message) => {
         const message = JSON.parse(_message);
         logger[level](message);
-      }
-    }
+      },
+    },
   });
 }
 
 export function getZipkinTokenizers(): Tokenizer[] {
   return [
     {
-      id: 'trace-id',
       fn: (req) => req.context.traceId,
+      id: 'trace-id',
     },
     {
-      id: 'span-id',
       fn: (req) => req.context.spanId,
+      id: 'span-id',
     },
     {
-      id: 'parent-span-id',
       fn: (req) => req.context.parentId,
+      id: 'parent-span-id',
     },
     {
-      id: 'sampled',
       fn: (req) => req.context.sampled,
+      id: 'sampled',
     },
   ];
 }

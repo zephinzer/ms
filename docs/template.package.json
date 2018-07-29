@@ -1,0 +1,22 @@
+{
+  "name": "@usvc/",
+  "version": "0.0.0",
+  "description": "",
+  "keywords": [],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zephinzer/ms.git"
+  },
+  "author": "zephinzer",
+  "contributors": [
+    {
+      "email": "dev-at-joeir-dot-net",
+      "name": "joseph",
+      "url": "https://github.com/zephinzer"
+    }
+  ],
+  "license": "MIT"
+}
