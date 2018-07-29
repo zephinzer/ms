@@ -1,7 +1,16 @@
 extends:
+  - "tslint:recommended"
   - "gts/tslint.json"
 rules:
   max-line-length:
     options:
       limit: 80
       severity: warn
+  no-string-literal: false
+  ordered-imports:
+    - true
+    - grouped-imports: true
+      import-sources-order: "any"
+      named-imports-order: "case-insensitive"
+  object-literal-sort-keys: false
+  quotemark: [true, "single", "jsx-double"]
