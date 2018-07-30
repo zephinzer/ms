@@ -1,4 +1,4 @@
-# `@usvc/logger-request`
+# `@usvc/`
 *(description of module)*
 
 ## Scope
