@@ -41,6 +41,7 @@ export interface TracerObjectParameters {
 export interface TracerObject {
   getContext: () => ExplicitContext;
   getExpressMiddleware: () => express.RequestHandler[];
+  getTracer: () => Tracer;
 }
 
 export function createTracer({
@@ -70,6 +71,7 @@ export function createTracer({
       zipkinInstrumentationMiddleware,
       contextProviderMiddleware,
     ]),
+    getTracer: () => tracer,
   };
 }
 
