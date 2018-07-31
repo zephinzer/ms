@@ -8,73 +8,145 @@ const {expect} = chai;
 
 describe('@usvc/request', () => {
   context('integration', () => {
-    let tracerA;
-    let tracerB;
-    let request;
-    let serverA;
-    let instanceA;
-    let serverB;
-    let instanceB;
-    let results;
+    context('with tracer', () => {
+      let tracerA;
+      let tracerB;
+      let request;
+      let serverA;
+      let instanceA;
+      let serverB;
+      let instanceB;
+      let observed;
 
-    before((done) => {
-      serverA = express();
-      tracerA = createTracer();
-      serverA.use(tracerA.getExpressMiddleware());
-      serverB = express();
-      tracerB = createTracer();
-      serverB.use(tracerB.getExpressMiddleware());
-      serverB.get('/', (req, res) => {
-        res.json(req.context);
-      });
-      request = createRequest({ tracer: tracerA.getTracer() });
-      instanceB = serverB.listen();
-      instanceB.on('listening', () => {
-        serverA.get('/b', (req, res) => {
-          request(
-            'service-b',
-            `http://localhost:${instanceB.address().port}`
-          ).then((response) => {
-            res.json({
-              a: req.context,
-              b: response,
+      before((done) => {
+        serverA = express();
+        tracerA = createTracer();
+        serverA.use(tracerA.getExpressMiddleware());
+        serverB = express();
+        tracerB = createTracer();
+        serverB.use(tracerB.getExpressMiddleware());
+        serverB.get('/', (req, res) => {
+          res.json(req.context);
+        });
+        request = createRequest({ tracer: tracerA.getTracer() });
+        instanceB = serverB.listen();
+        instanceB.on('listening', () => {
+          serverA.get('/b', (req, res) => {
+            request(
+              'service-b',
+              `http://localhost:${instanceB.address().port}`
+            ).then((response) => {
+              res.json({
+                a: req.context,
+                b: response,
+              });
             });
           });
-        });
-        instanceA = serverA.listen();
-        instanceA.on('listening', () => {
-          superagent
-            .get(`http://localhost:${instanceA.address().port}/b`)
-            .then(({ body }) => {
-              results = body;
-            })
-            .catch((err) => {
-              console.error(err.status, err.message);
-            })
-            .then(done);
+          instanceA = serverA.listen();
+          instanceA.on('listening', () => {
+            superagent
+              .get(`http://localhost:${instanceA.address().port}/b`)
+              .then(({ body }) => {
+                observed = body;
+              })
+              .catch((err) => {
+                console.error(err.status, err.message);
+              })
+              .then(done);
+          });
         });
       });
-    });
 
-    after(() => {
-      instanceB.close();
-      instanceA.close();
-    });
+      after(() => {
+        instanceB.close();
+        instanceA.close();
+      });
 
-    it('maintains the same trace ID', () => {
-      expect(results.a.traceId).to.deep.equal(results.b.traceId);
-    });
+      it('maintains the same trace ID', () => {
+        expect(observed.a.traceId).to.deep.equal(observed.b.traceId);
+      });
 
-    it('passes the spanId from one server to the other\'s parent', () => {
-      expect(results.a.spanId).to.deep.equal(results.b.parentId);
-    });
+      it('passes the spanId from one server to the other\'s parent', () => {
+        expect(observed.a.spanId).to.deep.equal(observed.b.parentId);
+      });
 
-    it('has the same span and parent in the first server', () => {
-      expect(results.a.spanId).to.deep.equal(results.b.parentId);
-    });
+      it('has the same span and parent in the first server', () => {
+        expect(observed.a.spanId).to.deep.equal(observed.a.parentId);
+      });
 
-    it('has a different span and parent in the subsequent servers', () => {
-      expect(results.b.spanId).to.not.deep.equal(results.b.parentId);
+      it('has a different span and parent in the subsequent servers', () => {
+        expect(observed.b.spanId).to.not.deep.equal(observed.b.parentId);
+      });
     });
+    // / with tracer
+
+    context('without tracer', () => {
+      let tracerA;
+      let tracerB;
+      let request;
+      let serverA;
+      let instanceA;
+      let serverB;
+      let instanceB;
+      let observed;
+
+      before((done) => {
+        serverA = express();
+        tracerA = createTracer();
+        serverA.use(tracerA.getExpressMiddleware());
+        serverB = express();
+        tracerB = createTracer();
+        serverB.use(tracerB.getExpressMiddleware());
+        serverB.get('/', (req, res) => {
+          res.json(req.context);
+        });
+        request = createRequest();
+        instanceB = serverB.listen();
+        instanceB.on('listening', () => {
+          serverA.get('/b', (req, res) => {
+            request(
+              `http://localhost:${instanceB.address().port}`
+            ).then((response) => {
+              res.json({
+                a: req.context,
+                b: response,
+              });
+            });
+          });
+          instanceA = serverA.listen();
+          instanceA.on('listening', () => {
+            superagent
+              .get(`http://localhost:${instanceA.address().port}/b`)
+              .then(({ body }) => {
+                observed = body;
+              })
+              .catch((err) => {
+                console.error(err.status, err.message);
+              })
+              .then(done);
+          });
+        });
+      });
+
+      after(() => {
+        instanceB.close();
+        instanceA.close();
+      });
+
+      it('does not maintain the trace ID', () => {
+        expect(observed.a.traceId).to.not.deep.equal(observed.b.traceId);
+      });
+
+      it('does not link parent and child span', () => {
+        expect(observed.a.spanId).to.not.deep.equal(observed.b.parentId);
+      });
+
+      it('is independent of each other\'s span ID', () => {
+        expect(observed.a.spanId).to.deep.equal(observed.a.parentId);
+        expect(observed.b.spanId).to.deep.equal(observed.b.parentId);
+      });
+    });
+    // / without tracer
   });
+  // / integration
 });

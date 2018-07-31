@@ -3,7 +3,7 @@ Request module for zipkin instrumentation.
 
 ## Scope
 
-- [x] create a request object
+- [x] create a Zipkin instrumented request object
 
 ## Installation
 
