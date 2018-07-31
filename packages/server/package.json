@@ -12,7 +12,14 @@
     "eg:es5": "npm run preeg && node ./example/es5",
     "eg:es6": "npm run preeg && babel-node --presets @babel/env example/es6/"
   },
-  "keywords": [],
+  "keywords": [
+    "boilerplate",
+    "bootstrap",
+    "chassis",
+    "express",
+    "server",
+    "microservice"
+  ],
   "publishConfig": {
     "access": "public"
   },
