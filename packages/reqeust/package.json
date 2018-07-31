@@ -1,0 +1,45 @@
+{
+  "name": "@usvc/request",
+  "version": "0.0.0",
+  "description": "Wrapped request module",
+  "scripts": {
+    "build": "tsc --project .",
+    "lint": "tslint --config ../../tslint.yaml --project .",
+    "pretest": "docker-compose -f ../../provisioning/deployment/compose/test.yml up -d",
+    "test": "mocha --require ts-node/register \"./src/*.test.ts\" \"./src/**/*.test.ts\"",
+    "posttest": "docker-compose -f ../../provisioning/deployment/compose/test.yml down",
+    "test:watch": "npm run test -- --watch --watch-extensions ts"
+  },
+  "keywords": [
+    "context",
+    "distributed",
+    "request",
+    "tracing",
+    "zipkin"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zephinzer/ms.git"
+  },
+  "author": "zephinzer",
+  "contributors": [
+    {
+      "name": "joseph",
+      "url": "https://github.com/zephinzer"
+    }
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^2.2.0",
+    "zipkin-instrumentation-fetch": "^0.14.0"
+  },
+  "devDependencies": {
+    "@usvc/tracer": "^0.1.1",
+    "superagent": "^3.8.3",
+    "ts-node": "^7.0.0",
+    "zipkin": "^0.14.0"
+  }
+}
