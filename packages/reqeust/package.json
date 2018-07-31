@@ -34,12 +34,12 @@
   "license": "MIT",
   "dependencies": {
     "node-fetch": "^2.2.0",
-    "zipkin-instrumentation-fetch": "^0.14.0"
+    "zipkin-instrumentation-fetch": "^0.13.0"
   },
   "devDependencies": {
     "@usvc/tracer": "^0.1.1",
     "superagent": "^3.8.3",
     "ts-node": "^7.0.0",
-    "zipkin": "^0.14.0"
+    "zipkin": "^0.13.0"
   }
 }

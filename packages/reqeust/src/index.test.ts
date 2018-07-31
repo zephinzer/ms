@@ -20,10 +20,14 @@ describe('@usvc/request', () => {
 
       before((done) => {
         serverA = express();
-        tracerA = createTracer();
+        tracerA = createTracer({
+          url: 'http://localhost:9411',
+        });
         serverA.use(tracerA.getExpressMiddleware());
         serverB = express();
-        tracerB = createTracer();
+        tracerB = createTracer({
+          url: 'http://localhost:9411',
+        });
         serverB.use(tracerB.getExpressMiddleware());
         serverB.get('/', (req, res) => {
           res.json(req.context);
@@ -110,6 +114,7 @@ describe('@usvc/request', () => {
               res.json({
                 a: req.context,
                 b: response.body,
+                r: response,
               });
             });
           });
@@ -144,6 +149,18 @@ describe('@usvc/request', () => {
       it('is independent of each other\'s span ID', () => {
         expect(observed.a.spanId).to.deep.equal(observed.a.parentId);
         expect(observed.b.spanId).to.deep.equal(observed.b.parentId);
+      });
+
+      it('returns the response headers', () => {
+        expect(observed.r).to.have.property('headers');
+      });
+
+      it('returns the status code', () => {
+        expect(observed.r).to.have.property('status');
+      });
+
+      it('returns the request URL', () => {
+        expect(observed.r).to.have.property('url');
       });
     });
     // / without tracer
