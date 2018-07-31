@@ -1,0 +1,38 @@
+{
+  "name": "@usvc/server",
+  "version": "0.0.0",
+  "description": "Creates a bootstrapped server based on Express",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc --project .",
+    "lint": "tslint --config ../../tslint.yaml --project .",
+    "test": "mocha --require ts-node/register \"./src/*.test.ts\" \"./src/**/*.test.ts\"",
+    "test:watch": "npm run test -- --watch --watch-extensions ts",
+    "preeg": "npm run build",
+    "eg:es5": "npm run preeg && node ./example/es5",
+    "eg:es6": "npm run preeg && babel-node --presets @babel/env example/es6/"
+  },
+  "keywords": [],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zephinzer/ms.git"
+  },
+  "author": "zephinzer",
+  "contributors": [
+    {
+      "name": "joseph",
+      "url": "https://github.com/zephinzer"
+    }
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "helmet": "^3.13.0"
+  }
+}
