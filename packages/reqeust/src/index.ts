@@ -28,8 +28,8 @@ export function createRequest({
   return (tracer !== null)
     ? (remoteServiceName, url, options) =>
       zipkinInstrumentFetch(fetch, {tracer, remoteServiceName})(url, options)
-      .then((v) => (format === 'raw') ? v : v[format]())
+      .then((v) => (format === 'raw') ? v : {...v, body: v[format]()})
     : (url, options) =>
       fetch(url, options)
-      .then((v) => (format === 'raw') ? v : v[format]())
+      .then((v) => (format === 'raw') ? v : {...v, body: v[format]()})
 }

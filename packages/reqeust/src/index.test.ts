@@ -38,7 +38,7 @@ describe('@usvc/request', () => {
             ).then((response) => {
               res.json({
                 a: req.context,
-                b: response,
+                b: response.body,
               });
             });
           });
@@ -109,7 +109,7 @@ describe('@usvc/request', () => {
             ).then((response) => {
               res.json({
                 a: req.context,
-                b: response,
+                b: response.body,
               });
             });
           });
@@ -117,7 +117,7 @@ describe('@usvc/request', () => {
           instanceA.on('listening', () => {
             superagent
               .get(`http://localhost:${instanceA.address().port}/b`)
-              .then(({ body }) => {
+              .then(({body}) => {
                 observed = body;
               })
               .catch((err) => {

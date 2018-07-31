@@ -1,9 +1,10 @@
 # `@usvc/request`
-Request module for zipkin instrumentation.
+Request module with zipkin instrumentation.
 
 ## Scope
 
 - [x] create a Zipkin instrumented request object
+- [x] fallback to normal request if no tracer is provided
 
 ## Installation
 
