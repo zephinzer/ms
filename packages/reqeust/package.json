@@ -37,6 +37,7 @@
     "zipkin-instrumentation-fetch": "^0.13.0"
   },
   "devDependencies": {
+    "@types/node-fetch": "^2.1.2",
     "@usvc/tracer": "^0.1.1",
     "superagent": "^3.8.3",
     "ts-node": "^7.0.0",

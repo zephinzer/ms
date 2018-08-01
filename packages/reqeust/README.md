@@ -1,5 +1,5 @@
 # `@usvc/request`
-Request module with zipkin instrumentation.
+Request module with zipkin instrumentation based on `node-fetch`.
 
 ## Scope
 
@@ -8,37 +8,92 @@ Request module with zipkin instrumentation.
 
 ## Installation
 
-*(installation instructions)*
+```bash
+npm i @usvc/request
+# OR
+yarn add @usvc/request
+```
 
 ## Usage
 
-*(usage instructions overview)*
+```js
+const {createRequest} = require('@usvc/request');
+// OR
+import {createRequest} from '@usvc/request';
+```
 
 ### Basic
 
-*(bare minimum usage with defaults)*
+```js
+// require as ^
+createRequest();
+```
 
 ### Full Configuration
 
-*(fully tweaked usage with all documented properties)*
+```js
+// require as ^
+// with your own tracer:
+const tracer = require('./tracer');
+// OR if you're using @usvc/tracer:
+const {createTracer} = require('@usvc/tracer');
+const tracerInstance = createTracer({
+  url: 'http://zipkin:9411', // for example only
+});
+createRequest({
+  format: 'json',
+  tracer: tracerInstance.getTracer()
+});
+```
 
 ## API Documentaiton
 
-*(global api notes)*
+### `.createRequest(:options)`
+Returns a request-like function. The `:options` parameter is an object that can accept the following keys:
 
-### `...` *(api name with function signature)*
+| Key | Defaults To | Description |
+| --- | --- | --- |
+| `format` | `"json"` | Decides the format of the response. Possible values are `"buffer"`, `"json"`, and `"text"`. |
+| `tracer` | `null` | Defines the tracer we should use. When left as `null`, no distributed tracing will be made available. |
 
-*(instructions for method)*
+When a `tracer` is specified in the parameters, the function signature of the returned request will be:
+
+```typescript
+export type RequestWithTracing = (
+  remoteServerName: string,
+  url: string,
+  options: object,
+) => RequestPromise<object>;
+```
+
+When no `tracer` is specified, the function signature will lack the `:remoteServiceName` parameter and resemble a standard `fetch` operation:
+
+```typescript
+export type RequestWithoutTracing = (
+  url: string,
+  options: object,
+) => RequestPromise<object>;
+```
+
+The `UsvcResponse` object returned by the `Promise` has the following schema:
+
+```typescript
+export interface UsvcResponse {
+  body: object; // response body
+  headers: object; // response headers
+  status: number; // HTTP status code
+  statusText: string; // HTTP status text
+  url: string; // request URL
+}
+```
 
 ## Examples
 
-### ... *(example name)*
-
-*(intention documentation of example)*
+`WIP`
 
 ## Development
 
-*(instructions for development)*
+See [the main README.md](../../README.md).
 
 ## License
 
@@ -48,12 +103,12 @@ View the license at [LICENSE](./LICENSE).
 
 ## Changelog
 
-*(changelog)*
+`WIP`
 
 ## Contributors
 
 | Name | Email | Website | About Me |
 | --- | --- | --- | --- |
-| ... | ... | ... | ... |
+| Joseph | - | https://github.com/zephinzer | - |
 
 # Cheers

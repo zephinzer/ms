@@ -1,8 +1,6 @@
 import fetch from 'node-fetch';
 import * as zipkin from 'zipkin';
 import * as zipkinInstrumentFetch from 'zipkin-instrumentation-fetch';
-import { url } from 'inspector';
-import { resolve } from 'url';
 
 export interface CreateRequest {
   format?: 'buffer' | 'json' | 'raw' | 'text';
@@ -15,6 +13,25 @@ export type RequestPromise<T> = (
   options?: object,
 ) => Promise<T>;
 
+export interface UsvcResponse {
+  body: object;
+  headers: object;
+  status: number;
+  statusText: string;
+  url: string;
+}
+
+export type RequestWithTracing = (
+  remoteServerName: string,
+  url: string,
+  options: object,
+) => RequestPromise<UsvcResponse>;
+
+export type RequestWithoutTracing = (
+  url: string,
+  options: object,
+) => RequestPromise<UsvcResponse>;
+
 /**
  * Creates the request object. If :tracer is not specified, this function
  * returns a normal `fetch`
@@ -25,14 +42,16 @@ export type RequestPromise<T> = (
 export function createRequest({
   format = 'json',
   tracer = null,
-}: CreateRequest = {}): RequestPromise<object> {
+}: CreateRequest = {}): RequestWithTracing | RequestWithoutTracing {
   return (tracer !== null)
-    ? (remoteServiceName, url, options) =>
-      zipkinInstrumentFetch(fetch, {tracer, remoteServiceName})(url, options)
-      .then((v) => resolveFetchLikeRequest(v, format))
-      : (url, options) =>
-      fetch(url, options)
-      .then((v) => resolveFetchLikeRequest(v, format));
+    ? ((remoteServiceName, url, options) =>
+        zipkinInstrumentFetch(fetch, {tracer, remoteServiceName})(url, options)
+        .then((v) => resolveFetchLikeRequest(v, format))
+      )
+    : ((url, options) =>
+        fetch(url, options)
+        .then((v) => resolveFetchLikeRequest(v, format))
+      );
 }
 
 function resolveFetchLikeRequest(rawFetchResponse, format) {
@@ -40,8 +59,6 @@ function resolveFetchLikeRequest(rawFetchResponse, format) {
     if (format !== 'raw') {
       rawFetchResponse[format]()
         .then((formattedresponse) => {
-          // console.info(rawFetchResponse.headers);
-          // console.info(rawFetchResponse.headers.get('x-powered-by'));
           resolve({
             body: formattedresponse,
             url: rawFetchResponse.url,
