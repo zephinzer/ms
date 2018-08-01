@@ -1,6 +1,6 @@
 {
   "name": "@usvc/request",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Wrapped request module",
   "scripts": {
     "build": "tsc --project .",
