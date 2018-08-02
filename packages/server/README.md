@@ -7,7 +7,7 @@ Creates a bootstrapped server based on Express.
 - [x] Support for cookies management
 - [x] Parses POST data with `Content-Type: application/json` correctly
 - [x] Parses POST data with `Content-Type: application/x-www-form-urlencoded` correctly
-- [ ] Support for Cross-Origin-Resource-Sharing (CORS)
+- [x] Support for Cross-Origin-Resource-Sharing (CORS)
 - [ ] Support for Content-Security-Policy (CSP) management
 - [ ] Bundled distributed tracing with Zipkin
 - [ ] Bundled metrics supporting Prometheus
@@ -46,9 +46,18 @@ const instance = server.listen(() => {
 ```js
 // require as ^
 const server = createServer({
+  enableCors: true,
   enableCookieParsing: true,
   enableJsonBody: true,
   enableUrlEncodedBody: true,
+  corsAllowedHeaders: undefined,
+  corsCredentials: true,
+  corsExposedHeaders: undefined,
+  corsMaxAge: ONE_DAY,
+  corsMethods: ALL,
+  corsOptionsSuccessStatus: 204,
+  corsPreflightContinue: true,
+  corsUrls: [],
   jsonBodyLimit: '100kb',
   jsonBodyType: '*/json',
   urlEncodedLimit: '100kb',
@@ -91,8 +100,15 @@ View the license at [LICENSE](./LICENSE).
 
 ## Changelog
 
-### 0.1.0
-- Initial release
+### 0.x
+### 0.0.2
+- Cross Origin Resource Sharing (CORS) support
+
+### 0.0.1
+- Cookie parsing
+- Basic HTTP header security
+- Parsing of JSON encoded boday data
+- Parsing of URL encoded body data
 
 ## Contributors
 
