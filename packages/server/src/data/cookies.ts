@@ -1,6 +1,6 @@
-import {Handler} from 'express';
 import * as cookieParser from 'cookie-parser';
 import cookieSession = require('cookie-session');
+import {ServerMiddleware} from '../middlewares';
 
 export function createMiddleware({
   keys = ['', ''],
@@ -10,7 +10,7 @@ export function createMiddleware({
   httpOnly = true,
   maxAge = 60e3 * 60,
   path = '/',
-}: DataCookiesOptions = {}): Handler[] {
+}: DataCookiesOptions = {}): ServerMiddleware {
   return [
     cookieParser(),
     cookieSession({

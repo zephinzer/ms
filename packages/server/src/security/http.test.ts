@@ -54,4 +54,15 @@ describe('@usvc/server/security/http', () => {
     expect(observed).to.have.property('x-xss-protection');
     expect(observed['x-xss-protection']).to.equal('1; mode=block');
   });
+  
+  it('disables browser-side caching', () => {
+    expect(observed).to.have.property('cache-control');
+    expect(observed['cache-control']).to.equal('no-store, no-cache, must-revalidate, proxy-revalidate');
+    expect(observed).to.have.property('expires');
+    expect(observed['expires']).to.equal('0');
+    expect(observed).to.have.property('pragma');
+    expect(observed['pragma']).to.equal('no-cache');
+    expect(observed).to.have.property('surrogate-control');
+    expect(observed['surrogate-control']).to.equal('no-store');
+  });
 });

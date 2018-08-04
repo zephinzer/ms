@@ -4,23 +4,30 @@ import * as security from './security';
 
 export interface CreateServer {
   enableCors?: boolean;
+  enableCsp?: boolean;
   enableCookies?: boolean;
   enableJsonBody?: boolean;
   enableUrlEncodedBody?: boolean;
-  cors?: security.cors.DataCorsOptions;
-  jsonBody?: data.json.DataJsonOptions;
-  urlEncodedBody?: data.urlEncoded.DataUrlEncodedOptions;
   cookies?: data.cookies.DataCookiesOptions;
+  cors?: security.cors.SecurityCorsOptions;
+  csp?: security.csp.SecurityCspOptions;
+  jsonBody?: data.json.DataJsonOptions;
+  logger?: object;
+  urlEncodedBody?: data.urlEncoded.DataUrlEncodedOptions;
 }
+
 export function createServer({
   enableCors = true,
+  enableCsp = true,
   enableCookies = true,
   enableJsonBody = true,
   enableUrlEncodedBody = true,
-  cors,
-  jsonBody,
-  urlEncodedBody,
   cookies,
+  cors,
+  csp,
+  jsonBody,
+  logger = console,
+  urlEncodedBody,
 }: CreateServer = {}): express.Application {
   const app = express();
   app.use(security.http.createMiddleware());
@@ -39,6 +46,15 @@ export function createServer({
 
   if (enableCookies) {
     app.use(data.cookies.createMiddleware(cookies));
+  }
+
+  if (enableCsp) {
+    app.use(security.csp.createMiddleware(csp));
+    security.csp.provisionCspReportingMiddleware({
+      application: app,
+      logger,
+      ...csp,
+    });
   }
 
   return app;

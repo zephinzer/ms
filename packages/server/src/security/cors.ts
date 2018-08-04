@@ -1,5 +1,5 @@
-import * as express from 'express';
 import * as cors from 'cors';
+import {ServerMiddleware} from '../middlewares';
 
 const ONE_DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24;
 
@@ -23,7 +23,7 @@ export function createMiddleware({
   optionsSuccessStatus = 204,
   preflightContinue = true,
   urls = [],
-}: DataCorsOptions = {}): express.Handler {
+}: SecurityCorsOptions = {}): ServerMiddleware {
   return cors({
     allowedHeaders,
     credentials,
@@ -53,7 +53,7 @@ export type HttpMethods =
   | 'OPTIONS'
   | 'HEAD';
 
-export interface DataCorsOptions {
+export interface SecurityCorsOptions {
   allowedHeaders?: string[];
   credentials?: boolean;
   exposedHeaders?: string[];
