@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {createServer} from './';
 import * as supertest from 'supertest';
 
-describe('@usvc/server', () => {
+describe.only('@usvc/server', () => {
   describe('integration tests', () => {
     it('works', () => {
       expect(() => {
@@ -180,18 +180,16 @@ describe('@usvc/server', () => {
         supertest(server)
           .post('/_cookies')
           .expect(200)
-          .then(({header}) =>
-            header['set-cookie']
-          )
+          .then(({header}) => header['set-cookie'])
           .then((cookies) =>
             supertest(server)
               .post('/_cookies')
               .set('Cookie', cookies)
               .expect(200)
-              .then(({body}) => {
-                expect(body).to.deep.equal(2);
-              })
           )
+          .then(({body}) => {
+            expect(body).to.deep.equal(2);
+          })
       );
 
       it('parses cookies', () =>
