@@ -192,14 +192,17 @@ View the license at [LICENSE](./LICENSE).
 
 ## Changelog
 
-### 0.x
-### 0.0.4
+### 0.1.x
+#### 0.1.0
 - Added cookie sessions
+- Added CSP support
 
-### 0.0.2
+### 0.x
+
+#### 0.0.2
 - Cross Origin Resource Sharing (CORS) support
 
-### 0.0.1
+#### 0.0.1
 - Cookie parsing
 - Basic HTTP header security
 - Parsing of JSON encoded boday data
