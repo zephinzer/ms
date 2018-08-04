@@ -76,7 +76,6 @@ const server = createServer({
     httpOnly: true,
     maxAge: 60e3 * 60,
     path: '/',
-    sameSite: true,
   },
 });
 
@@ -141,7 +140,6 @@ Returns a bootstrapped Express server. The `:options` parameter has the followin
 | `httpOnly` | Boolean | `true` | Set the HTTP-Only flag or not |
 | `maxAge` | Number | `60e3 * 60` | Maximum time the cookie is cacheable |
 | `path` | String | `"/"` | Path of the cookie |
-| `sameSite` | Boolean | `true` | Restrict cookie to the same site or not |
 
 ## Examples
 

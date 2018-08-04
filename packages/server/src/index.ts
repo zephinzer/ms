@@ -3,7 +3,7 @@ import * as data from './data';
 import * as security from './security';
 
 export interface CreateServer {
-  enableCors?: boolean,
+  enableCors?: boolean;
   enableCookies?: boolean;
   enableJsonBody?: boolean;
   enableUrlEncodedBody?: boolean;

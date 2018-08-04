@@ -10,14 +10,14 @@ const DEFAULT_METHODS = [
   'PATCH',
   'DELETE',
   'OPTIONS',
-  'HEAD'
+  'HEAD',
 ];
 const DEFAULT_MAX_AGE = ONE_DAY_IN_MILLISECONDS;
 
 export function createMiddleware({
-  allowedHeaders = undefined,
+  allowedHeaders,
   credentials = true,
-  exposedHeaders = undefined,
+  exposedHeaders,
   maxAge = DEFAULT_MAX_AGE,
   methods = DEFAULT_METHODS,
   optionsSuccessStatus = 204,
@@ -44,7 +44,14 @@ export function createMiddleware({
   });
 }
 
-export type HttpMethods = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'HEAD';
+export type HttpMethods =
+  'GET'
+  | 'POST'
+  | 'PUT'
+  | 'PATCH'
+  | 'DELETE'
+  | 'OPTIONS'
+  | 'HEAD';
 
 export interface DataCorsOptions {
   allowedHeaders?: string[];
