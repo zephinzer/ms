@@ -1,21 +1,18 @@
 import * as express from 'express';
 import * as cors from 'cors';
 
-export type HttpMethods = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'HEAD';
+const ONE_DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24;
 
-export interface SecurityCorsCreateMiddlewareParameters {
-  credentials?: boolean;
-  allowedHeaders?: string[];
-  exposedHeaders?: string[];
-  maxAge?: number;
-  methods?: HttpMethods[];
-  optionsSuccessStatus?: number;
-  preflightContinue?: boolean;
-  urls?: string[];
-}
-
-const DEFAULT_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'];
-const DEFAULT_MAX_AGE = 1000 * 60 * 60 * 24; // one day cache
+const DEFAULT_METHODS = [
+  'GET',
+  'POST',
+  'PUT',
+  'PATCH',
+  'DELETE',
+  'OPTIONS',
+  'HEAD'
+];
+const DEFAULT_MAX_AGE = ONE_DAY_IN_MILLISECONDS;
 
 export function createMiddleware({
   allowedHeaders = undefined,
@@ -26,7 +23,7 @@ export function createMiddleware({
   optionsSuccessStatus = 204,
   preflightContinue = true,
   urls = [],
-}: SecurityCorsCreateMiddlewareParameters = {}): express.Handler {
+}: DataCorsOptions = {}): express.Handler {
   return cors({
     allowedHeaders,
     credentials,
@@ -35,12 +32,27 @@ export function createMiddleware({
     methods,
     optionsSuccessStatus,
     origin: (o, cb) => {
-      if (o === '' || urls.indexOf(o) !== -1) {
+      if (!o || urls.indexOf(o) !== -1) {
         cb(null, true);
       } else {
-        cb(new Error('Invalid origin'));
+        const error = new Error('Invalid origin');
+        error['status'] = 401;
+        cb(error, false);
       }
     },
     preflightContinue,
   });
+}
+
+export type HttpMethods = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'HEAD';
+
+export interface DataCorsOptions {
+  allowedHeaders?: string[];
+  credentials?: boolean;
+  exposedHeaders?: string[];
+  maxAge?: number;
+  methods?: HttpMethods[];
+  optionsSuccessStatus?: number;
+  preflightContinue?: boolean;
+  urls?: string[];
 }

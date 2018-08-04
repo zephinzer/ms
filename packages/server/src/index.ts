@@ -1,76 +1,44 @@
 import * as express from 'express';
-import * as cookieParser from 'cookie-parser';
 import * as data from './data';
 import * as security from './security';
 
 export interface CreateServer {
   enableCors?: boolean,
-  enableCookieParsing?: boolean;
+  enableCookies?: boolean;
   enableJsonBody?: boolean;
   enableUrlEncodedBody?: boolean;
-  corsAllowedHeaders?: string[];
-  corsCredentials?: boolean;
-  corsExposedHeaders?: string[];
-  corsMaxAge?: number;
-  corsMethods?: security.cors.HttpMethods[];
-  corsOptionsSuccessStatus?: number;
-  corsPreflightContinue?: boolean;
-  corsUrls?: string[];
-  jsonBodyLimit?: string;
-  jsonBodyType?: string;
-  urlEncodedLimit?: string;
-  urlEncodedType?: string;
+  cors?: security.cors.DataCorsOptions;
+  jsonBody?: data.json.DataJsonOptions;
+  urlEncodedBody?: data.urlEncoded.DataUrlEncodedOptions;
+  cookies?: data.cookies.DataCookiesOptions;
 }
 export function createServer({
   enableCors = true,
-  enableCookieParsing = true,
+  enableCookies = true,
   enableJsonBody = true,
   enableUrlEncodedBody = true,
-  corsAllowedHeaders,
-  corsCredentials,
-  corsExposedHeaders,
-  corsMaxAge,
-  corsMethods,
-  corsOptionsSuccessStatus,
-  corsPreflightContinue,
-  corsUrls,
-  jsonBodyLimit,
-  jsonBodyType,
-  urlEncodedLimit,
-  urlEncodedType,
+  cors,
+  jsonBody,
+  urlEncodedBody,
+  cookies,
 }: CreateServer = {}): express.Application {
   const app = express();
   app.use(security.http.createMiddleware());
 
   if (enableCors) {
-    app.use(security.cors.createMiddleware({
-      allowedHeaders: corsAllowedHeaders,
-      credentials: corsCredentials,
-      exposedHeaders: corsExposedHeaders,
-      maxAge: corsMaxAge,
-      methods: corsMethods,
-      optionsSuccessStatus: corsOptionsSuccessStatus,
-      preflightContinue: corsPreflightContinue,
-      urls: corsUrls,
-    }));
+    app.use(security.cors.createMiddleware(cors));
   }
 
   if (enableJsonBody) {
-    app.use(data.json.createMiddleware({
-      limit: jsonBodyLimit,
-      type: jsonBodyType,
-    }));
+    app.use(data.json.createMiddleware(jsonBody));
   }
 
   if (enableUrlEncodedBody) {
-    app.use(data.urlEncoded.createMiddleware({
-      limit: urlEncodedLimit,
-      type: urlEncodedType,
-    }));
+    app.use(data.urlEncoded.createMiddleware(urlEncodedBody));
   }
 
-  if (enableCookieParsing) {
-    app.use(data.cookies.createMiddleware());
+  if (enableCookies) {
+    app.use(data.cookies.createMiddleware(cookies));
   }
 
   return app;

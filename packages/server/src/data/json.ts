@@ -1,14 +1,14 @@
 import {Handler} from 'express';
 import * as bodyParser from 'body-parser';
 
-export interface DataJsonCreateMiddlewareParameters {
-  limit?: string;
-  type?: string;
-}
-
 export function createMiddleware({
   type = '*/json',
   limit = '100kb',
-}: DataJsonCreateMiddlewareParameters = {}): Handler {
+}: DataJsonOptions = {}): Handler {
   return bodyParser.json({limit, type});
+}
+
+export interface DataJsonOptions {
+  limit?: string;
+  type?: string;
 }

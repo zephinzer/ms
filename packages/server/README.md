@@ -46,23 +46,40 @@ const instance = server.listen(() => {
 ```js
 // require as ^
 const server = createServer({
+  enableCookies: true,
   enableCors: true,
-  enableCookieParsing: true,
   enableJsonBody: true,
   enableUrlEncodedBody: true,
-  corsAllowedHeaders: undefined,
-  corsCredentials: true,
-  corsExposedHeaders: undefined,
-  corsMaxAge: ONE_DAY,
-  corsMethods: ALL,
-  corsOptionsSuccessStatus: 204,
-  corsPreflightContinue: true,
-  corsUrls: [],
-  jsonBodyLimit: '100kb',
-  jsonBodyType: '*/json',
-  urlEncodedLimit: '100kb',
-  urlEncodedType: '*/x-www-form-urlencoded',
+  cors: {
+    allowedHeaders: undefined,
+    credentials: true,
+    exposedHeaders: undefined,
+    maxAge: ONE_DAY,
+    methods: ALL_HTTP_METHODS,
+    optionsSuccessStatus: 204,
+    preflightContinue: true,
+    urls: [],
+  },
+  jsonBody: {
+    limit: '100kb',
+    type: '*/json',
+  },
+  urlEncodedBody: {
+    limit: '100kb',
+    type: '*/x-www-form-urlencoded',
+  },
+  cookies: {
+    keys: [],
+    name: 'session',
+    secret: undefined,
+    domain: 'localhost',
+    httpOnly: true,
+    maxAge: 60e3 * 60,
+    path: '/',
+    sameSite: true,
+  },
 });
+
 const instance = server.listen(() => {
   const {port} = instance.address;
   console.info(`Listening on http://localhost:${port}`)
@@ -74,15 +91,57 @@ const instance = server.listen(() => {
 ### `.createServer(:options)`
 Returns a bootstrapped Express server. The `:options` parameter has the following schema:
 
-| Key | Defaults To | Description |
-| --- | --- | --- |
-| `enableCookieParsing` | `true` | Enables use of `.cookies` in the request object in Express handlers |
-| `enableJsonBody` | `true` | Enables use of `.body` in the request object if the `Content-Type` matches the `:jsonBodyType` parameter |
-| `enableUrlEncodedBody` | `true` | Enables use of `.body` in the request object if the `Content-Type` matches the `:urlEncodedType` parameter |
-| `jsonBodyLimit` | `"100kb"` | Maximum size of the POST data to parse |
-| `jsonBodyType` | `"*/json"` | Indicates the `Content-Type` pattern when the body should be parsed by the JSON parser |
-| `urlEncodedLimit` | `"100kb"` | Maximum size of the POST data to parse |
-| `urlEncodedType` | `"*/x-www-form-urlencoded"` | Indicates the `Content-Type` pattern when the body should be parsed by the URL Encoded parser |
+| Key | Type | Defaults To | Description |
+| --- | --- | | --- | --- |
+| `enableCookies` | Boolean | `true` | Enables use of `.cookies` and `.session` in the request object in Express handlers |
+| `enableJsonBody` | Boolean | `true` | Enables use of `.body` in the request object if the `Content-Type` matches the `:jsonBodyType` parameter |
+| `enableUrlEncodedBody` | Boolean | `true` | Enables use of `.body` in the request object if the `Content-Type` matches the `:urlEncodedType` parameter |
+| `cors` | [DataCorsOptions](#options-for-cors-datacorsoptions) | Options for configuring CORS |
+| `jsonBody` | [DataJsonOptions](#options-for-jsonbody-datajsonoptions) | - | Options for configuring parsing of JSON body data |
+| `urlEncodedBody` | [DataUrlEncodedOptions](#options-for-jsonbody-dataurlencodedoptions) | Options for configuring parsing of URL encoded body data |
+| `cookies` | [DataCookieOptions](#options-for-cookies-datacookiesoptions) | Options for configuring cookies management |
+
+## Options Documentation
+
+### Options for `cors` (`DataCorsOptions`)
+
+| Key | Type | Defaults To | Description |
+| --- | --- | --- | --- |
+| `allowedHeaders` | String[] | `undefined` | Sets the `Access-Control-Allow-Headers` HTTP response header |
+| `credentials` | Boolean | `true` | Specifies if credentials are allowed |
+| `exposedHeaders` | String[] | `undefined` | Sets the allowed headers to be exposed |
+| `maxAge` | Number | One day | The maximum age of caching in milliseconds |
+| `methods` | String[] | All HTTP methods | The allowed HTTP methods |
+| `optionsSuccessStatus` | Number | `204` | Specifies the HTTP status code to send on `OPTIONS` success |
+| `preflightContinue` | Boolean | `true` | Specifies if the preflight response should be sent immediately (`false`) or not (`true`) |
+| `urls` | String[] | `[]` | An array of allowed URLs for which the `Origin` request header can be |
+
+### Options for `jsonBody` (`DataJsonOptions`)
+
+| Key | Type | Defaults To | Description |
+| --- | --- | --- | --- |
+| `limit` | String | `"100kb"` | Maximum size of the JSON body |
+| `type` | String | `"*/json"` | Pattern of the `Content-Type` HTTP header value to invoke JSON body parsing |
+
+### Options for `urlEncodedBody` (`DataUrlEncodedOptions`)
+
+| Key | Type | Defaults To | Description |
+| --- | --- | --- | --- |
+| `limit` | String | `"100kb"` | Maximum size of the JSON body |
+| `type` | String | `"*/x-www-form-urlencoded"` | Pattern of the `Content-Type` HTTP header value to invoke JSON body parsing |
+
+### Options for `cookies` (`DataCookiesOptions`)
+
+| Key | Type | Defaults To | Description |
+| --- | --- | --- | --- |
+| `keys` | String[] | `[]` | Keys used to sign (index zero) and verify cookies (other index numbers) |
+| `name` | String | `"session"` | Name of the cookie |
+| `secret` | String | - | Secret used to compute the hash |
+| `domain` | String | `"localhost"` | Domain which the cookie is registered on |
+| `httpOnly` | Boolean | `true` | Set the HTTP-Only flag or not |
+| `maxAge` | Number | `60e3 * 60` | Maximum time the cookie is cacheable |
+| `path` | String | `"/"` | Path of the cookie |
+| `sameSite` | Boolean | `true` | Restrict cookie to the same site or not |
 
 ## Examples
 
@@ -101,6 +160,9 @@ View the license at [LICENSE](./LICENSE).
 ## Changelog
 
 ### 0.x
+### 0.0.4
+- Added cookie sessions
+
 ### 0.0.2
 - Cross Origin Resource Sharing (CORS) support
 
