@@ -1,7 +1,6 @@
 import {expect} from 'chai';
 import {createServer} from './';
 import * as supertest from 'supertest';
-import { doesNotReject } from 'assert';
 
 describe('@usvc/server', () => {
   describe('integration tests', () => {
