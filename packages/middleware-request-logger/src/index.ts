@@ -23,7 +23,7 @@ const DEFAULT_LEVEL = 'info';
  *
  * @return {express.RequestHandler}
  */
-export function createLogger({
+export function createMiddleware({
   additionalTokens = [],
   hostname = DEFAULT_HOSTNAME,
   logger = DEFAULT_LOGGER,

@@ -1,6 +1,6 @@
 {
-  "name": "@usvc/request",
-  "version": "0.0.3",
+  "name": "@usvc/component-request",
+  "version": "0.0.0",
   "description": "Wrapped request module",
   "scripts": {
     "build": "npx tsc --project .",

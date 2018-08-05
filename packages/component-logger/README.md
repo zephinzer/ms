@@ -1,4 +1,4 @@
-# `@usvc/logger-application`
+# `@usvc/component-logger`
 An application-level logger using Winston under the hood.
 
 ## Scope
@@ -15,25 +15,25 @@ An application-level logger using Winston under the hood.
 ## Installation
 
 ```bash
-npm i @usvc/logger-application;
+npm i @usvc/component-logger;
 # OR
-yarn add @usvc/logger-application;
+yarn add @usvc/component-logger;
 ```
 
 ## Usage
 
 ```js
 // es5:
-const {logger} = require('@usvc/logger-application');
+const {logger} = require('@usvc/component-logger');
 // es6:
-import {logger} from '@usvc/logger-application';
+import {logger} from '@usvc/component-logger';
 ```
 
 ### Basic
 
 ```js
 // require it as per ^
-logger.init();
+logger.initialize();
 logger.info('hi');
 ```
 
@@ -41,7 +41,7 @@ logger.info('hi');
 
 ```js
 // require it as per ^
-logger.init({
+logger.initialize({
   id: 'logger_id',
   formats: [],
   setPrimary: false,
@@ -60,12 +60,12 @@ logger.info('hi');
 ## API
 The following properties are properties belonging to the imported `{logger}`. You could also `import` them as separate functions.
 
-### `.init(:options)`
+### `.initialize(:options)`
 Initialises a logger but does not return it. When running for the first time, this logger will be the default when you do `logger.info(...)`.
 
 > To access a logger with an ID `'id'`, use `logger.use('id').info(...)`. 
 
-`.init` takes in an object for the `:options` with the keys as follows:
+`.initialize` takes in an object for the `:options` with the keys as follows:
 
 **Parameters**
 
@@ -81,12 +81,12 @@ Initialises a logger but does not return it. When running for the first time, th
 ### `.createConsoleTransport()`
 Creates a `winston.transports.Console` transport object.
 
-> Use this transport in the `transports` property of the `.init()` method.
+> Use this transport in the `transports` property of the `.initialize()` method.
 
 ### `.createFluentTransport()`
 Creates a transport object capable of sending logs to a FluentD service. Uses `fluent-logger` under the hood.
 
-> Use this transport in the `transports` property of the `.init()` method.
+> Use this transport in the `transports` property of the `.initialize()` method.
 
 **Parameters**
 
@@ -104,7 +104,7 @@ Creates a transport object capable of sending logs to a FluentD service. Uses `f
 See [https://github.com/fluent/fluent-logger-node#options](https://github.com/fluent/fluent-logger-node#options) for more information. We use a subset of their configurations.
 
 ### `.createZipkinContextFormatter()`
-Creates a formatter which injects the Zipkin context into every log if it is available. Use this formatter in the `formats` property of the `.init()` method.
+Creates a formatter which injects the Zipkin context into every log if it is available. Use this formatter in the `formats` property of the `.initialize()` method.
 
 | Key | Defaults To | Description |
 | --- | --- | --- |
@@ -151,4 +151,8 @@ Run: `npm run eg:zipkin` in this directory
 
 ## Changelog
 
-`COMING SOON`
+### 0.0.x
+#### 0.0.1
+- Initial release
+
+# Cheers

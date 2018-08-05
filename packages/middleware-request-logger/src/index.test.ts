@@ -5,7 +5,7 @@ import {Server} from 'http';
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
-import {createLogger as createRequestLogger, ExtendedRequest} from './';
+import {createMiddleware, ExtendedRequest} from './';
 
 chai.use(sinonChai);
 const {expect} = chai;
@@ -38,7 +38,7 @@ describe('@joeir/logger-request', () => {
   });
 
   it('has the correct log paremeters', (done) => {
-    server.use(createRequestLogger({
+    server.use(createMiddleware({
       logger: loggerMock, // to validate the logging
     }));
     server.get('/', (_req, res) => {
@@ -79,8 +79,8 @@ describe('@joeir/logger-request', () => {
   context('integration', () => {
     describe('basic', () => {
       it('works', () => {
-        expect(() => createRequestLogger()).to.not.throw();
-        server.use(createRequestLogger({
+        expect(() => createMiddleware()).to.not.throw();
+        server.use(createMiddleware({
           logger: loggerMock, // to validate the logging
         }));
         server.get('/', (_req, res) => {
@@ -119,7 +119,7 @@ describe('@joeir/logger-request', () => {
           req.arbitrary = arbitraryNumber;
           next();
         });
-        server.use(createRequestLogger({
+        server.use(createMiddleware({
           additionalTokens: [
             {
               id: 'arbitrary-log',

@@ -4,7 +4,7 @@ This repository is a mono-repo for components, libraries, frameworks and other t
 Current packages are:
 
 - [`@usvc/logger-application`](./packages/logger-application): application logger for centralised logging based on `winston`
-- [`@usvc/logger-request`](./packages/logger-request) : request logging middleware based on `morgan` for `express`
+- [`@usvc/middleware-request-logger`](./packages/middleware-request-logger) : request logging middleware based on `morgan` for `express`
 - [`@usvc/request`](./packages/request) : Zipkin instrumented request utility function based on `node-fetch`
 - [`@usvc/server`](./packages/server) : bootstrapped server for a microservices architecture based on `express`
 - [`@usvc/tracer`](./packages/tracer) : distributed tracing middleware with `zipkin` that integrates with the request and application logger to provide trace IDs in your logs

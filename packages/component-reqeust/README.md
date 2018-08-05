@@ -1,4 +1,4 @@
-# `@usvc/request`
+# `@usvc/component-request`
 Request module with zipkin instrumentation based on `node-fetch`.
 
 ## Scope
@@ -9,17 +9,17 @@ Request module with zipkin instrumentation based on `node-fetch`.
 ## Installation
 
 ```bash
-npm i @usvc/request
+npm i @usvc/component-request
 # OR
-yarn add @usvc/request
+yarn add @usvc/component-request
 ```
 
 ## Usage
 
 ```js
-const {createRequest} = require('@usvc/request');
+const {createRequest} = require('@usvc/component-request');
 // OR
-import {createRequest} from '@usvc/request';
+import {createRequest} from '@usvc/component-request';
 ```
 
 ### Basic
@@ -102,8 +102,8 @@ This package is licensed under the MIT license.
 View the license at [LICENSE](./LICENSE).
 
 ## Changelog
-### 0.1.x
-#### 0.1.0
+### 0.0.x
+#### 0.0.1
 - Initial release
 
 ## Contributors

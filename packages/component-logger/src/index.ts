@@ -28,7 +28,7 @@ export const logger: Logger = {
   createConsoleTransport,
   createFluentTransport,
   createZipkinContextFormatter,
-  init: initialize,
+  initialize,
   use,
   _instances: {},
 };
@@ -152,7 +152,7 @@ export interface InitializeParameters {
 
 export interface Logger {
   count: number;
-  init: Initialize;
+  initialize: Initialize;
   _instances: LoggerInstance;
   // logger should be able to handle any key thrown at it
   // tslint:disable-next-line no-any

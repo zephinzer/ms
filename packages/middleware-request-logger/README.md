@@ -1,4 +1,4 @@
-# `@usvc/logger-request`
+# `@usvc/middleware-request-logger`
 Morgan based logger for usage in a microservices architecture.
 
 The output logs will include the following properties:
@@ -15,7 +15,7 @@ The output logs will include the following properties:
 | referrer | The referrer (if applicable) |
 | remoteHostname | The remote hostname (if found) |
 | remoteAddress | The remote IP address |
-| serverHostname | The server hostname as specified in the `createLogger` method |
+| serverHostname | The server hostname as specified in the `createMiddleware` method |
 | time | ISO timestamp of the request |
 | userAgent | User agent of the request |
 
@@ -28,18 +28,18 @@ The output logs will include the following properties:
 ## Installation
 
 ```bash
-npm i @usvc/logger-request;
+npm i @usvc/middleware-request-logger;
 # OR
-yarn add @usvc/logger-request;
+yarn add @usvc/middleware-request-logger;
 ```
 
 ## Usage
 
 ```js
 // es5:
-const {createLogger} = require('@usvc/logger-request');
+const {createMiddleware} = require('@usvc/middleware-request-logger');
 // es6:
-import {createLogger} from '@usvc/logger-request';
+import {createMiddleware} from '@usvc/middleware-request-logger';
 ```
 
 ### Basic
@@ -48,7 +48,7 @@ import {createLogger} from '@usvc/logger-request';
 const express = require('express');
 // require as ^
 const app = express();
-app.use(createLogger());
+app.use(createMiddleware());
 app.listen(...);
 ```
 
@@ -58,7 +58,7 @@ app.listen(...);
 const express = require('express');
 // require as ^
 const app = express();
-app.use(createLogger({
+app.use(createMiddleware({
 
 }));
 app.listen(...);
@@ -67,7 +67,7 @@ app.listen(...);
 
 ## API Documentaiton
 
-### `createLogger(:options)`
+### `createMiddleware(:options)`
 Creates the request logger middleware and returns an Express compatible middleware that you can `app.use(...)`.
 
 **Parameters**
@@ -80,7 +80,7 @@ Creates the request logger middleware and returns an Express compatible middlewa
 | `level` | `info` | The level of the logger to be used. |
 
 ### `getZipkinTokenizers()`
-This function returns an array of tokenizers that you can use in the `additionalTokenizers` option in `createLogger()`.
+This function returns an array of tokenizers that you can use in the `additionalTokenizers` option in `createMiddleware()`.
 
 These tokenizers depend on there being a `.context` property in the `Request` object passed by Express. This is automatically done if you are using the Zipkin tracer as defined in [`@usvc/tracer`](../tracer).
 

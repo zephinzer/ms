@@ -1,4 +1,4 @@
-# `@usvc/tracer`
+# `@usvc/component-tracer`
 Distributed trace management package using Zipkin for use in an Express application.
 
 ## Scope
@@ -12,9 +12,9 @@ Distributed trace management package using Zipkin for use in an Express applicat
 ## Installation
 
 ```bash
-npm i @usvc/tracer;
+npm i @usvc/component-tracer;
 # OR
-yarn add @usvc/tracer;
+yarn add @usvc/component-tracer;
 ```
 
 ## Usage
@@ -24,13 +24,13 @@ yarn add @usvc/tracer;
 const {
   createTracer,
   getContextProviderMiddleware,
-} = require('@usvc/tracer');
+} = require('@usvc/component-tracer');
 
 // es6
 import {
   createTracer,
   getContextProviderMiddleware,
-} from '@usvc/tracer';
+} from '@usvc/component-tracer';
 ```
 
 ### Basic
@@ -105,8 +105,8 @@ View the license at [LICENSE](./LICENSE).
 
 ## Changelog
 
-### 0.1.x
-#### 0.1.0
+### 0.0.x
+#### 0.0.1
 - Initial release
 
 ## Contributors

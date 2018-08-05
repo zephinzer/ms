@@ -1,4 +1,4 @@
-# `@usvc/server`
+# `@usvc/component-server`
 Creates a bootstrapped server based on Express.
 
 ## Scope
@@ -18,17 +18,17 @@ Creates a bootstrapped server based on Express.
 ## Installation
 
 ```bash
-npm i @usvc/server;
+npm i @usvc/component-server;
 # OR
-yarn add @usvc/server;
+yarn add @usvc/component-server;
 ```
 
 ## Usage
 
 ```js
-const {createServer} = require('@usvc/server');
+const {createServer} = require('@usvc/component-server');
 // OR
-import {createServer} from '@usvc/server';
+import {createServer} from '@usvc/component-server';
 ```
 
 ### Basic
@@ -202,18 +202,12 @@ View the license at [LICENSE](./LICENSE).
 
 ## Changelog
 
-### 0.1.x
-#### 0.1.0
+### 0.0.x
+#### 0.0.1
 - Added cookie sessions
 - Added CSP support
 - Added server middleware hooks
-
-### 0.x
-
-#### 0.0.2
 - Cross Origin Resource Sharing (CORS) support
-
-#### 0.0.1
 - Cookie parsing
 - Basic HTTP header security
 - Parsing of JSON encoded boday data

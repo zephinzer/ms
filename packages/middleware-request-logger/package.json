@@ -1,6 +1,6 @@
 {
-  "name": "@usvc/logger-request",
-  "version": "0.1.1",
+  "name": "@usvc/middleware-request-logger",
+  "version": "0.0.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
