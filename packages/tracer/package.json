@@ -3,13 +3,12 @@
   "version": "0.1.1",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc --project .",
-    "clean": "rm -rf ./dist/*",
-    "lint": "tslint --config ../../tslint.yaml --project .",
+    "build": "../../scripts/build.sh",
+    "lint": "../../scripts/lint.sh",
+    "test": "../../scripts/test.sh",
     "prestart": "npm run build",
     "start": "ts-node test",
     "pretest": "docker-compose -f ./provisioning/deployment/compose/test.yml up -d",
-    "test": "mocha --require ts-node/register \"./src/*.test.ts\" \"./src/**/*.test.ts\"",
     "posttest": "docker-compose -f ./provisioning/deployment/compose/test.yml down",
     "test:watch": "npm run test -- --watch --watch-extensions ts"
   },

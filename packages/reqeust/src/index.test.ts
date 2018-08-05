@@ -38,7 +38,7 @@ describe('@usvc/request', () => {
           serverA.get('/b', (req, res) => {
             request(
               'service-b',
-              `http://localhost:${instanceB.address().port}`
+              `http://localhost:${instanceB.address().port}`,
             ).then((response) => {
               res.json({
                 a: req.context,
@@ -54,6 +54,7 @@ describe('@usvc/request', () => {
                 observed = body;
               })
               .catch((err) => {
+                // tslint:disable-next-line no-console
                 console.error(err.status, err.message);
               })
               .then(done);
@@ -109,7 +110,7 @@ describe('@usvc/request', () => {
         instanceB.on('listening', () => {
           serverA.get('/b', (req, res) => {
             request(
-              `http://localhost:${instanceB.address().port}`
+              `http://localhost:${instanceB.address().port}`,
             ).then((response) => {
               res.json({
                 a: req.context,
@@ -126,6 +127,7 @@ describe('@usvc/request', () => {
                 observed = body;
               })
               .catch((err) => {
+                // tslint:disable-next-line no-console
                 console.error(err.status, err.message);
               })
               .then(done);

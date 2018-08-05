@@ -12,14 +12,14 @@ chai.use(sinonChai);
 const {expect} = chai;
 
 describe('@usvc/server/security/csp', () => {
-  let logger = {
+  const logger = {
     info: null,
   };
-  let server;
-  let observed = {
+  const observed = {
     cspHeaders: null,
     cspReportResponse: null,
   };
+  let server;
 
   before(() => {
     logger.info = sinon.spy();

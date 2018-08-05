@@ -4,10 +4,9 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc --project ./tsconfig.json",
-    "clean": "rm -rf ./dist/*",
-    "lint": "tslint --config ../../tslint.yaml --project .",
-    "test": "mocha --require ts-node/register \"./src/*.test.ts\" \"./src/**/*.test.ts\"",
+    "build": "../../scripts/build.sh",
+    "lint": "../../scripts/lint.sh",
+    "test": "../../scripts/test.sh",
     "test:watch": "npm run test -- --watch --watch-extensions ts",
     "preeg:es5": "npm run build",
     "preeg:es6": "npm run build",

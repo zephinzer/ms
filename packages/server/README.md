@@ -89,6 +89,8 @@ const server = createServer({
     limit: '100kb',
     type: '*/json',
   },
+  logger: console,
+  middlewares: {},
   urlEncodedBody: {
     limit: '100kb',
     type: '*/x-www-form-urlencoded',
@@ -107,7 +109,7 @@ const instance = server.listen(() => {
 Returns a bootstrapped Express server. The `:options` parameter has the following schema:
 
 | Key | Type | Defaults To | Description |
-| --- | --- | | --- | --- |
+| --- | --- | --- | --- |
 | `enableCookies` | Boolean | `true` | Enables use of `.cookies` and `.session` in the request object in Express handlers |
 | `enableJsonBody` | Boolean | `true` | Enables use of `.body` in the request object if the `Content-Type` matches the `:jsonBodyType` parameter |
 | `enableUrlEncodedBody` | Boolean | `true` | Enables use of `.body` in the request object if the `Content-Type` matches the `:urlEncodedType` parameter |
@@ -115,6 +117,7 @@ Returns a bootstrapped Express server. The `:options` parameter has the followin
 | `cors` | [SecurityCorsOptions](#options-for-cors-securitycorsoptions) | Options for configuring CORS |
 | `jsonBody` | [DataJsonOptions](#options-for-jsonbody-datajsonoptions) | - | Options for configuring parsing of JSON body data |
 | `logger` | Object | `console` | The logger to use for this server instance |
+| `middlewares` | [CreateServerHooks](#options-for-middlewares-createserverhooks) | `{}` | Any pre/post middleware injections you may need |
 | `urlEncodedBody` | [DataUrlEncodedOptions](#options-for-jsonbody-dataurlencodedoptions) | Options for configuring parsing of URL encoded body data |
 
 ## Options Documentation
@@ -169,6 +172,13 @@ Returns a bootstrapped Express server. The `:options` parameter has the followin
 | `limit` | String | `"100kb"` | Maximum size of the JSON body |
 | `type` | String | `"*/json"` | Pattern of the `Content-Type` HTTP header value to invoke JSON body parsing |
 
+### Options for `middlewares` (`CreateServerHooks`)
+
+| Key | type | Defaults To | Description |
+| --- | --- | --- | --- |
+| `after` | RequestHandler[] | `[]` | Any post-initialisation middlewares |
+| `before` | RequestHandler[] | `[]` | Any pre-initialisation middlewares |
+
 ### Options for `urlEncodedBody` (`DataUrlEncodedOptions`)
 
 | Key | Type | Defaults To | Description |
@@ -196,6 +206,7 @@ View the license at [LICENSE](./LICENSE).
 #### 0.1.0
 - Added cookie sessions
 - Added CSP support
+- Added server middleware hooks
 
 ### 0.x
 

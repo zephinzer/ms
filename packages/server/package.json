@@ -4,9 +4,9 @@
   "description": "Creates a bootstrapped server based on Express",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc --project .",
-    "lint": "tslint --config ../../tslint.yaml --project .",
-    "test": "mocha --require ts-node/register \"./src/*.test.ts\" \"./src/**/*.test.ts\"",
+    "build": "../../scripts/build.sh",
+    "lint": "../../scripts/lint.sh",
+    "test": "../../scripts/test.sh",
     "test:watch": "npm run test -- --watch --watch-extensions ts",
     "preeg": "npm run build",
     "eg:es5": "npm run preeg && node ./example/es5",

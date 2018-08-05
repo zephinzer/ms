@@ -5,14 +5,12 @@ node_js:
 services:
   - docker
 before_install:
-  - nvm use 6 && npm i -g npx
   - nvm use 8 && npm i -g npx
 if: tag IS blank AND branch = "master"
 script:
   - set -e
   - lerna bootstrap
   - lerna run build
-  - nvm use 6 && lerna run test
   - nvm use 8 && lerna run test
   - if [ "${TRAVIS_BRANCH}" = "master" ] && ! [ `printf -- "${TRAVIS_COMMIT_MESSAGE}" | grep "Publish"` ]; then
       git checkout ${TRAVIS_BRANCH};

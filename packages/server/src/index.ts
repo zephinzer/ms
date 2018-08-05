@@ -2,18 +2,30 @@ import * as express from 'express';
 import * as data from './data';
 import * as security from './security';
 
-export interface CreateServer {
+export interface CreateServerConfigurations extends CreateServerEnablers {
+  cookies?: data.cookies.DataCookiesOptions;
+  cors?: security.cors.SecurityCorsOptions;
+  csp?: security.csp.SecurityCspOptions;
+  jsonBody?: data.json.DataJsonOptions;
+  urlEncodedBody?: data.urlEncoded.DataUrlEncodedOptions;
+}
+
+export interface CreateServerEnablers {
   enableCors?: boolean;
   enableCsp?: boolean;
   enableCookies?: boolean;
   enableJsonBody?: boolean;
   enableUrlEncodedBody?: boolean;
-  cookies?: data.cookies.DataCookiesOptions;
-  cors?: security.cors.SecurityCorsOptions;
-  csp?: security.csp.SecurityCspOptions;
-  jsonBody?: data.json.DataJsonOptions;
+}
+
+export interface CreateServerHooks {
+  after?: express.RequestHandler[];
+  before?: express.RequestHandler[];
+}
+
+export interface CreateServerOptions extends CreateServerConfigurations {
   logger?: object;
-  urlEncodedBody?: data.urlEncoded.DataUrlEncodedOptions;
+  middlewares?: CreateServerHooks;
 }
 
 export function createServer({
@@ -26,10 +38,18 @@ export function createServer({
   cors,
   csp,
   jsonBody,
+  middlewares = {},
   logger = console,
   urlEncodedBody,
-}: CreateServer = {}): express.Application {
+}: CreateServerOptions = {}): express.Application {
   const app = express();
+
+  // any pre-injection middlewares?
+  if (middlewares.before && middlewares.before.length > 0) {
+    middlewares.before.forEach((requestHandler) => app.use(requestHandler));
+  }
+
+  // standard http security - not an option
   app.use(security.http.createMiddleware());
 
   if (enableCors) {
@@ -55,6 +75,11 @@ export function createServer({
       logger,
       ...csp,
     });
+  }
+
+  // any post-injection middlewares?
+  if (middlewares.after && middlewares.after.length > 0) {
+    middlewares.after.forEach((requestHandler) => app.use(requestHandler));
   }
 
   return app;

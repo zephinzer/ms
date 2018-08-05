@@ -15,7 +15,7 @@ describe('@usvc/server/data/cookies', () => {
 
   context('issuing cookies', () => {
     const endpoint = '/_issue_cookies';
-    
+
     before(() => {
       server.get(endpoint, (req, res) => {
         const {views} = req.session;
@@ -29,9 +29,9 @@ describe('@usvc/server/data/cookies', () => {
       supertest(server)
         .get(endpoint)
         .then(({header}) => {
-          expect(header['set-cookie'])
-            .to.exist;
-        })
+          // tslint:disable-next-line no-unused-expression
+          expect(header['set-cookie']).to.not.be.undefined;
+        }),
     );
 
     it('reads and re-issues correctly', () =>
@@ -41,12 +41,12 @@ describe('@usvc/server/data/cookies', () => {
         .then((cookies) =>
           supertest(server)
             .get(endpoint)
-            .set('Cookie', cookies)
+            .set('Cookie', cookies),
         )
         .then(({body}) => {
           expect(body).to.have.property('views');
           expect(body.views).to.deep.equal(2);
-        })
+        }),
     );
   });
 
@@ -77,7 +77,7 @@ describe('@usvc/server/data/cookies', () => {
           expect(body.bool).to.deep.equal('true');
           expect(body).to.have.property('2');
           expect(body['2']).to.deep.equal('two');
-        })
+        }),
     );
   });
   // / parsing cookies

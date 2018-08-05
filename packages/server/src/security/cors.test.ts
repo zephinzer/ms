@@ -17,18 +17,18 @@ describe('@usvc/server/security/cors', () => {
       exposedHeaders: ['content-type'],
       maxAge: 1000 * 60,
       methods: ['GET'],
-      urls: ['http://_test.website']
+      urls: ['http://_test.website'],
     }));
     server.get('/', (req, res) => {
-      res.json('ok')
-    })
+      res.json('ok');
+    });
     return supertest(server)
       .options('/')
       .set('Origin', 'http://_test.website')
       .expect(200)
       .then((response) => {
         observed = response['headers'];
-      })
+      });
   });
 
   it('sets the credentials correctly', () => {
@@ -38,7 +38,8 @@ describe('@usvc/server/security/cors', () => {
 
   it('sets the allowed headers', () => {
     expect(observed).to.have.property('access-control-allow-headers');
-    expect(observed['access-control-allow-headers']).to.deep.equal('Authorization');
+    expect(observed['access-control-allow-headers'])
+      .to.deep.equal('Authorization');
   });
 
   it('sets the allowed methods', () => {
@@ -48,7 +49,8 @@ describe('@usvc/server/security/cors', () => {
 
   it('sets the allowed origin', () => {
     expect(observed).to.have.property('access-control-allow-origin');
-    expect(observed['access-control-allow-origin']).to.deep.equal('http://_test.website');
+    expect(observed['access-control-allow-origin'])
+      .to.deep.equal('http://_test.website');
   });
 
   it('sets the max age', () => {

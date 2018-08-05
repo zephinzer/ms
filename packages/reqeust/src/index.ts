@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import fetch, { Response } from 'node-fetch';
 import * as zipkin from 'zipkin';
 import * as zipkinInstrumentFetch from 'zipkin-instrumentation-fetch';
 
@@ -32,6 +32,9 @@ export type RequestWithoutTracing = (
   options: object,
 ) => RequestPromise<UsvcResponse>;
 
+// (i can't live) with or without you
+export type UsvcRequestFactory = RequestWithTracing | RequestWithoutTracing;
+
 /**
  * Creates the request object. If :tracer is not specified, this function
  * returns a normal `fetch`
@@ -42,7 +45,7 @@ export type RequestWithoutTracing = (
 export function createRequest({
   format = 'json',
   tracer = null,
-}: CreateRequest = {}): RequestWithTracing | RequestWithoutTracing {
+}: CreateRequest = {}): UsvcRequestFactory {
   return (tracer !== null)
     ? ((remoteServiceName, url, options) =>
         zipkinInstrumentFetch(fetch, {tracer, remoteServiceName})(url, options)
@@ -54,7 +57,16 @@ export function createRequest({
       );
 }
 
-function resolveFetchLikeRequest(rawFetchResponse, format) {
+/**
+ * Ugly hack to map a symbol into its primitive object
+ *
+ * @param rawFetchResponse
+ * @param format
+ */
+function resolveFetchLikeRequest(
+  rawFetchResponse: Response,
+  format: string,
+): Promise<UsvcResponse> {
   return new Promise((resolve, reject) => {
     if (format !== 'raw') {
       rawFetchResponse[format]()
@@ -66,9 +78,10 @@ function resolveFetchLikeRequest(rawFetchResponse, format) {
             statusText: rawFetchResponse.statusText,
             headers: (() => {
               const headers = {};
-              const headerIterator = (new Map(rawFetchResponse.headers)).entries();
+              const headerIterator =
+                (new Map(rawFetchResponse.headers)).entries();
               let header = headerIterator.next().value;
-              while(header !== undefined) {
+              while (header !== undefined) {
                 const headerKey = header[0];
                 const headerValue = header[1];
                 header = headerIterator.next().value;
@@ -81,4 +94,4 @@ function resolveFetchLikeRequest(rawFetchResponse, format) {
         .catch(reject);
     }
   });
-};
+}

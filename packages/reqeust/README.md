@@ -102,8 +102,9 @@ This package is licensed under the MIT license.
 View the license at [LICENSE](./LICENSE).
 
 ## Changelog
-
-`WIP`
+### 0.1.x
+#### 0.1.0
+- Initial release
 
 ## Contributors
 

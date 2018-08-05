@@ -9,6 +9,8 @@ Current packages are:
 - [`@usvc/server`](./packages/server) : bootstrapped server for a microservices architecture based on `express`
 - [`@usvc/tracer`](./packages/tracer) : distributed tracing middleware with `zipkin` that integrates with the request and application logger to provide trace IDs in your logs
 
+> We support the latest LTS version of Node only. As of time of publishing this is **8.11.3**.
+
 ## Development
 ### Getting Started
 Clone this repository locally and run `npm install` to install the base dependencies.

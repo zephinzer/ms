@@ -2,11 +2,65 @@ import {expect} from 'chai';
 import {createServer} from './';
 import * as supertest from 'supertest';
 
-describe.only('@usvc/server', () => {
+describe('@usvc/server', () => {
+  describe('middleware hooks', () => {
+    let server;
+
+    describe('before', () => {
+      before(() => {
+        server = createServer({
+          middlewares: {
+            before: [
+              (_req, res) => {
+                res
+                  .status(418)
+                  .json('you\'re not getting past this teapot');
+              },
+            ],
+          },
+        });
+      });
+
+      it('works', () =>
+        supertest(server)
+          .get('/')
+          .expect('x-powered-by', 'Express') // no http security
+          .expect(418),
+      );
+    });
+
+    describe('after', () => {
+      before(() => {
+        server = createServer({
+          middlewares: {
+            after: [
+              (_req, res) => {
+                res
+                  .status(418)
+                  .json('you\'re not getting past this teapot');
+              },
+            ],
+          },
+        });
+      });
+
+      it('works', () =>
+        supertest(server)
+          .get('/')
+          .expect(418)
+          .then(({header}) => {
+            expect(header['x-powered-by'])
+              .to.not.exist; // http security applied
+          }),
+      );
+    });
+  });
+  // / middleware hooks
+
   describe('integration tests', () => {
     it('works', () => {
       expect(() => {
-        createServer()
+        createServer();
       }).to.not.throw();
     });
 
@@ -23,14 +77,14 @@ describe.only('@usvc/server', () => {
           before(() => {
             server = createServer({
               cors: {
-                urls: ['localhost']
-              }
+                urls: ['localhost'],
+              },
             });
             server.get('/', (_req, res) => {
               res.json('ok');
             });
           });
-  
+
           it('can have custom allowed urls', () =>
             Promise.all([
               supertest(server)
@@ -66,7 +120,7 @@ describe.only('@usvc/server', () => {
               results.forEach((result) => {
                 expect(result).to.deep.equal(true);
               });
-            })
+            }),
           );
         });
         // / urls
@@ -85,7 +139,7 @@ describe.only('@usvc/server', () => {
             .options('/')
             .then((response) => {
               results = response;
-            })
+            }),
           );
 
           it('returns the :optionsSuccessStatus value', () => {
@@ -146,7 +200,7 @@ describe.only('@usvc/server', () => {
           results.forEach((result) => {
             expect(result).to.deep.equal(true);
           });
-        })
+        }),
       );
 
       it('parses json body data', () =>
@@ -157,7 +211,7 @@ describe.only('@usvc/server', () => {
           .expect(200)
           .then(({body}) => {
             expect(body).to.deep.equal(data);
-          })
+          }),
       );
 
       it('parses url encoded body data', () =>
@@ -173,7 +227,7 @@ describe.only('@usvc/server', () => {
             expect(body.d.A).to.deep.equal(data.d.A.toString());
             expect(body.d.B).to.deep.equal(data.d.B.toString());
             expect(body.d.C).to.deep.equal(data.d.C.toString());
-          })
+          }),
       );
 
       it('generates cookies', () =>
@@ -185,11 +239,11 @@ describe.only('@usvc/server', () => {
             supertest(server)
               .post('/_cookies')
               .set('Cookie', cookies)
-              .expect(200)
+              .expect(200),
           )
           .then(({body}) => {
             expect(body).to.deep.equal(2);
-          })
+          }),
       );
 
       it('parses cookies', () =>
@@ -200,8 +254,8 @@ describe.only('@usvc/server', () => {
           .then(({body}) => {
             expect(body).to.deep.equal({
               a: '1', b: 'c', d: 'true',
-            })
-          })
+            });
+          }),
       );
     });
     // / with defaults

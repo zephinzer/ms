@@ -15,7 +15,7 @@ interface LoggerMock {
 }
 
 describe('@joeir/logger-request', () => {
-  let loggerMock: LoggerMock = {};
+  const loggerMock: LoggerMock = {};
   let server: express.Application;
   let instance: Server;
 
@@ -44,7 +44,7 @@ describe('@joeir/logger-request', () => {
     server.get('/', (_req, res) => {
       res.json('ok');
     });
-    const instance = server.listen(() => {
+    instance = server.listen(() => {
       superagent
         .get(`http://localhost:${instance.address()['port']}`)
         .end((err, response) => {
@@ -66,12 +66,12 @@ describe('@joeir/logger-request', () => {
               && status === '200'
               && contentLength === '4'
               && httpVersion === '1.1'
-              && !isNaN(parseFloat(responseTimeMs))
+              && !isNaN(Math.floor(responseTimeMs))
               && (userAgent.match(/^node-superagent/gi) !== null)
-            ))
+            )),
           );
           instance.close();
-          done();    
+          done();
         });
     });
   });
@@ -94,17 +94,17 @@ describe('@joeir/logger-request', () => {
               (log) => log.level === 'access',
               (log) => log.method === 'GET',
               (log) => log.url === '/',
-              (log) => !isNaN(parseInt(log.status)),
-              (log) => !isNaN(parseInt(log.contentLength)),
-              (log) => !isNaN(parseFloat(log.responseTimeMs)),
-              (log) => !isNaN(parseFloat(log.httpVersion)),
+              (log) => !isNaN(Math.floor(log.status)),
+              (log) => !isNaN(Math.floor(log.contentLength)),
+              (log) => !isNaN(Math.floor(log.responseTimeMs)),
+              (log) => !isNaN(Math.floor(log.httpVersion)),
               (log) => typeof log.remoteHostname !== 'undefined',
               (log) => typeof log.serverHostname !== 'undefined',
               (log) => typeof log.time !== 'undefined',
               (log) => typeof log.userAgent !== 'undefined',
             ].forEach((supposedMatch) => {
               expect(loggerMock.info).to.be.calledWith(
-                sinon.match(supposedMatch)
+                sinon.match(supposedMatch),
               );
             });
           });
@@ -114,7 +114,7 @@ describe('@joeir/logger-request', () => {
     describe('extensions', () => {
       it('works', () => {
         const arbitraryNumber = Math.floor(Math.random() * 100000);
-        const mockHostname = '__test_hostname'
+        const mockHostname = '__test_hostname';
         server.use((req: ExtendedRequest, _res, next) => {
           req.arbitrary = arbitraryNumber;
           next();
@@ -143,14 +143,14 @@ describe('@joeir/logger-request', () => {
             expect(loggerMock.mock).to.be.calledOnce;
             expect(loggerMock.mock).to.be.calledWith(
               sinon.match((val) =>
-                val.arbitraryLog == arbitraryNumber),
+                val.arbitraryLog === arbitraryNumber),
             );
             expect(loggerMock.mock).to.be.calledWith(
               sinon.match((val) =>
-                val.serverHostname == mockHostname),
+                val.serverHostname === mockHostname),
             );
           });
       });
-    }); 
+    });
   });
 });

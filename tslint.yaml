@@ -1,11 +1,17 @@
 extends:
   - "tslint:recommended"
   - "gts/tslint.json"
+  - "tslint-no-unused-expression-chai"
+rulesDirectory:
+  - "tslint-microsoft-contrib"
 rules:
   max-line-length:
     options:
       limit: 80
       severity: warn
+  mocha-avoid-only: true
+  mocha-no-side-effect-code: true
+  mocha-unneeded-done: true
   no-string-literal: false
   ordered-imports:
     - true

@@ -47,6 +47,6 @@ describe('@usvc/server/data/json', () => {
         expect(body.object).to.deep.equal({
           hello: 'world',
         });
-      })
+      }),
   );
 });

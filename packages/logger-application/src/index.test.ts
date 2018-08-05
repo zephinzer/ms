@@ -39,7 +39,9 @@ describe('@joeir/logger-application', () => {
 
       logger.a(message);
       expect(formatterSpy).to.be.calledOnce;
-      expect(formatterSpy).to.be.calledWith(sinon.match((v) => v.message === message));
+      expect(formatterSpy).to.be.calledWith(
+        sinon.match((v) => v.message === message),
+      );
     });
   });
 });

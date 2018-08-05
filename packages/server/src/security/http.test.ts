@@ -13,14 +13,14 @@ describe('@usvc/server/security/http', () => {
     server = express();
     server.use(createMiddleware());
     server.get('/', (req, res) => {
-      res.json('ok')
-    })
+      res.json('ok');
+    });
     return supertest(server)
       .get('/')
       .expect(200)
       .then((response) => {
         observed = response['headers'];
-      })
+      });
   });
 
   it('hides any indication of express', () => {
@@ -42,7 +42,8 @@ describe('@usvc/server/security/http', () => {
 
   it('implements HTTP strict transport security', () => {
     expect(observed).to.have.property('strict-transport-security');
-    expect(observed['strict-transport-security']).to.equal('max-age=15552000; includeSubDomains');
+    expect(observed['strict-transport-security'])
+      .to.equal('max-age=15552000; includeSubDomains');
   });
 
   it('sets download options for IE8+', () => {
@@ -54,10 +55,11 @@ describe('@usvc/server/security/http', () => {
     expect(observed).to.have.property('x-xss-protection');
     expect(observed['x-xss-protection']).to.equal('1; mode=block');
   });
-  
+
   it('disables browser-side caching', () => {
     expect(observed).to.have.property('cache-control');
-    expect(observed['cache-control']).to.equal('no-store, no-cache, must-revalidate, proxy-revalidate');
+    expect(observed['cache-control'])
+      .to.equal('no-store, no-cache, must-revalidate, proxy-revalidate');
     expect(observed).to.have.property('expires');
     expect(observed['expires']).to.equal('0');
     expect(observed).to.have.property('pragma');

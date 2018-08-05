@@ -9,7 +9,7 @@ describe('@joeir/tracer', () => {
 
   beforeEach(() => {
     tracer = createTracer({
-      url: 'http://localhost:9411'
+      url: 'http://localhost:9411',
     });
   });
 
@@ -34,7 +34,7 @@ describe('@joeir/tracer', () => {
         .get('/')
         .expect(200);
     });
-  
+
     it('allows the context to be accessed correctly', () => {
       server.get('/', (req, res) => {
         expect(req.context).to.include.keys([

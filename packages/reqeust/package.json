@@ -3,10 +3,10 @@
   "version": "0.0.2",
   "description": "Wrapped request module",
   "scripts": {
-    "build": "tsc --project .",
-    "lint": "tslint --config ../../tslint.yaml --project .",
+    "build": "../../scripts/build.sh",
+    "lint": "../../scripts/lint.sh",
+    "test": "../../scripts/test.sh",
     "pretest": "docker-compose -f ../../provisioning/deployment/compose/test.yml up -d",
-    "test": "mocha --require ts-node/register \"./src/*.test.ts\" \"./src/**/*.test.ts\"",
     "posttest": "docker-compose -f ../../provisioning/deployment/compose/test.yml down",
     "test:watch": "npm run test -- --watch --watch-extensions ts"
   },
