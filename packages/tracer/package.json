@@ -3,9 +3,9 @@
   "version": "0.1.1",
   "main": "dist/index.js",
   "scripts": {
-    "build": "../../scripts/build.sh",
-    "lint": "../../scripts/lint.sh",
-    "test": "../../scripts/test.sh",
+    "build": "npx tsc --project .",
+    "lint": "npx tslint --config ../../tslint.yaml --project .",
+    "test": "npx mocha --require ts-node/register \"./src/*.test.ts\" \"./src/**/*.test.ts\";",
     "prestart": "npm run build",
     "start": "ts-node test",
     "pretest": "docker-compose -f ./provisioning/deployment/compose/test.yml up -d",

@@ -3,9 +3,9 @@
   "version": "0.0.2",
   "description": "Wrapped request module",
   "scripts": {
-    "build": "../../scripts/build.sh",
-    "lint": "../../scripts/lint.sh",
-    "test": "../../scripts/test.sh",
+    "build": "npx tsc --project .",
+    "lint": "npx tslint --config ../../tslint.yaml --project .",
+    "test": "npx mocha --require ts-node/register \"./src/*.test.ts\" \"./src/**/*.test.ts\";",
     "pretest": "docker-compose -f ../../provisioning/deployment/compose/test.yml up -d",
     "posttest": "docker-compose -f ../../provisioning/deployment/compose/test.yml down",
     "test:watch": "npm run test -- --watch --watch-extensions ts"
