@@ -6,11 +6,11 @@
   "scripts": {
     "build": "npx tsc --project .",
     "lint": "npx tslint --config ../../tslint.yaml --project .",
-    "test": "npx mocha --require ts-node/register \"./src/*.test.ts\" \"./src/**/*.test.ts\";",
+    "test": "npx mocha --require ts-node/register \"./src/*.test.ts\" \"./src/**/*.test.ts\"",
     "test:watch": "npm run test -- --watch --watch-extensions ts",
     "preeg": "npm run build",
-    "eg:es5": "npm run preeg && node ./example/es5",
-    "eg:es6": "npm run preeg && babel-node --presets @babel/env example/es6/"
+    "eg:es5": "npm run preeg && nodemon ./example/es5",
+    "eg:es6": "npm run preeg && nodemon --exec babel-node --presets @babel/env example/es6/"
   },
   "keywords": [
     "boilerplate",
@@ -42,7 +42,9 @@
     "cookie-session": "^2.0.0-beta.3",
     "cors": "^2.8.4",
     "express": "^4.16.3",
-    "helmet": "^3.13.0"
+    "express-prom-bundle": "^3.3.0",
+    "helmet": "^3.13.0",
+    "prom-client": "^11.1.1"
   },
   "devDependencies": {
     "@types/cookie-session": "^2.0.35",

@@ -10,11 +10,11 @@ const {expect} = chai;
 describe('@joeir/logger-application', () => {
   it('increases the count for every time init() is called', () => {
     const initialCount = logger.count;
-    logger.init();
+    logger.initialize();
     expect(logger.count).to.equal(initialCount + 1);
   });
 
-  describe('.init()', () => {
+  describe('.initialize()', () => {
     it('creates a logger instance with the specified instance', () => {
       const formatterSpy = sinon.spy();
       const format = (info) => {
@@ -25,7 +25,7 @@ describe('@joeir/logger-application', () => {
       const levels = {a: 1, b: 0};
       const level = 'b';
       const transport = new winston.transports.Console();
-      logger.init({
+      logger.initialize({
         id: '_test',
         formats: [format],
         levels,

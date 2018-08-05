@@ -10,8 +10,8 @@ Creates a bootstrapped server based on Express.
 - [x] Parses POST data with `Content-Type: application/x-www-form-urlencoded` correctly
 - [x] Support for Cross-Origin-Resource-Sharing (CORS)
 - [x] Support for Content-Security-Policy (CSP) management
+- [x] Bundled metrics supporting Prometheus
 - [ ] Bundled distributed tracing with Zipkin
-- [ ] Bundled metrics supporting Prometheus
 - [ ] Readiness check configuration
 - [ ] Liveness check configuration
 
@@ -90,6 +90,9 @@ const server = createServer({
     type: '*/json',
   },
   logger: console,
+  metrics: {
+    uri: '/metrics',
+  },
   middlewares: {},
   urlEncodedBody: {
     limit: '100kb',
@@ -111,14 +114,18 @@ Returns a bootstrapped Express server. The `:options` parameter has the followin
 | Key | Type | Defaults To | Description |
 | --- | --- | --- | --- |
 | `enableCookies` | Boolean | `true` | Enables use of `.cookies` and `.session` in the request object in Express handlers |
+| `enableCors` | Boolean | `true` | Enables the use of Cross-Origin-Resource-Sharing headers |
+| `enableCsp` | Boolean | `true` | Enables the use of Content-Security-Policy headers |
 | `enableJsonBody` | Boolean | `true` | Enables use of `.body` in the request object if the `Content-Type` matches the `:jsonBodyType` parameter |
+| `enableMetrics` | Boolean | `true` | Enables use of metrics |
 | `enableUrlEncodedBody` | Boolean | `true` | Enables use of `.body` in the request object if the `Content-Type` matches the `:urlEncodedType` parameter |
-| `cookies` | [DataCookieOptions](#options-for-cookies-datacookiesoptions) | Options for configuring cookies management |
-| `cors` | [SecurityCorsOptions](#options-for-cors-securitycorsoptions) | Options for configuring CORS |
+| `cookies` | [DataCookieOptions](#options-for-cookies-datacookiesoptions) | - | Options for configuring cookies management |
+| `cors` | [SecurityCorsOptions](#options-for-cors-securitycorsoptions) | - | Options for configuring CORS |
 | `jsonBody` | [DataJsonOptions](#options-for-jsonbody-datajsonoptions) | - | Options for configuring parsing of JSON body data |
 | `logger` | Object | `console` | The logger to use for this server instance |
+| `metrics` | [MetricsOptions](#options-for-metrics-observabilitymetricsoptions) | - | Configuration options for the metrics |
 | `middlewares` | [CreateServerHooks](#options-for-middlewares-createserverhooks) | `{}` | Any pre/post middleware injections you may need |
-| `urlEncodedBody` | [DataUrlEncodedOptions](#options-for-jsonbody-dataurlencodedoptions) | Options for configuring parsing of URL encoded body data |
+| `urlEncodedBody` | [DataUrlEncodedOptions](#options-for-jsonbody-dataurlencodedoptions) | - | Options for configuring parsing of URL encoded body data |
 
 ## Options Documentation
 
@@ -171,6 +178,12 @@ Returns a bootstrapped Express server. The `:options` parameter has the followin
 | --- | --- | --- | --- |
 | `limit` | String | `"100kb"` | Maximum size of the JSON body |
 | `type` | String | `"*/json"` | Pattern of the `Content-Type` HTTP header value to invoke JSON body parsing |
+
+### Options for `metrics` (`ObservabilityMetricsOptions`)
+
+| Key | Type | Defaults To | Description |
+| --- | --- | --- | --- |
+| `uri` | String | `"/metrics"` | The endpoint where the metrics can be assessed from |
 
 ### Options for `middlewares` (`CreateServerHooks`)
 

@@ -31,11 +31,11 @@ export function createMiddleware({
     maxAge,
     methods,
     optionsSuccessStatus,
-    origin: (o, cb) => {
-      if (!o || urls.indexOf(o) !== -1) {
+    origin: (origin, cb) => {
+      if (!origin || urls.indexOf(origin) !== -1) {
         cb(null, true);
       } else {
-        const error = new Error('Invalid origin');
+        const error = new Error(`Invalid origin: "${origin}"`);
         error['status'] = 401;
         cb(error, false);
       }

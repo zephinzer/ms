@@ -5,5 +5,5 @@ const instance = server.listen();
 instance.on('listening', () => {
   const {port} = instance.address();
   console.info(`[es6] Listening on http://localhost:${port}. All is well.`);
-  process.exit(0);
+  // process.exit(0);
 });

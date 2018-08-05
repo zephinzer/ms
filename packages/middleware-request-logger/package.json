@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npx tsc --project .",
     "lint": "npx tslint --config ../../tslint.yaml --project .",
-    "test": "npx mocha --require ts-node/register \"./src/*.test.ts\" \"./src/**/*.test.ts\";",
+    "test": "npx mocha --require ts-node/register \"./src/*.test.ts\" \"./src/**/*.test.ts\"",
     "test:watch": "npm run test -- --watch --watch-extensions ts",
     "preeg:es5": "npm run build",
     "eg:es5": "node ./example/es5",

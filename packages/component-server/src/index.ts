@@ -1,20 +1,23 @@
 import * as express from 'express';
 import * as data from './data';
 import * as security from './security';
+import * as observability from './observability';
 
 export interface CreateServerConfigurations extends CreateServerEnablers {
   cookies?: data.cookies.DataCookiesOptions;
   cors?: security.cors.SecurityCorsOptions;
   csp?: security.csp.SecurityCspOptions;
   jsonBody?: data.json.DataJsonOptions;
+  metrics?: observability.metrics.ObservabilityMetricsOptions;
   urlEncodedBody?: data.urlEncoded.DataUrlEncodedOptions;
 }
 
 export interface CreateServerEnablers {
+  enableCookies?: boolean;
   enableCors?: boolean;
   enableCsp?: boolean;
-  enableCookies?: boolean;
   enableJsonBody?: boolean;
+  enableMetrics?: boolean;
   enableUrlEncodedBody?: boolean;
 }
 
@@ -33,16 +36,20 @@ export function createServer({
   enableCsp = true,
   enableCookies = true,
   enableJsonBody = true,
+  enableMetrics = true,
   enableUrlEncodedBody = true,
   cookies,
   cors,
   csp,
   jsonBody,
+  metrics,
   middlewares = {},
   logger = console,
   urlEncodedBody,
 }: CreateServerOptions = {}): express.Application {
   const app = express();
+
+  let metricsComponent: observability.metrics.MetricsComponent;
 
   // any pre-injection middlewares?
   if (middlewares.before && middlewares.before.length > 0) {
@@ -54,6 +61,13 @@ export function createServer({
 
   if (enableCors) {
     app.use(security.cors.createMiddleware(cors));
+  }
+
+  if (enableMetrics) {
+    metricsComponent = observability.metrics.create({
+      uri: '/metrics',
+    });
+    app.use(metricsComponent.getExpressMiddleware());
   }
 
   if (enableJsonBody) {
@@ -80,6 +94,10 @@ export function createServer({
   // any post-injection middlewares?
   if (middlewares.after && middlewares.after.length > 0) {
     middlewares.after.forEach((requestHandler) => app.use(requestHandler));
+  }
+
+  if (enableMetrics) {
+    metricsComponent.provisionMetrics(app);
   }
 
   return app;

@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import {createServer} from './';
+import * as promClient from 'prom-client';
 import * as supertest from 'supertest';
 
 describe('@usvc/server', () => {
@@ -8,6 +9,7 @@ describe('@usvc/server', () => {
 
     describe('before', () => {
       before(() => {
+        promClient.register.clear();
         server = createServer({
           middlewares: {
             before: [
@@ -74,6 +76,8 @@ describe('@usvc/server', () => {
 
       describe('cors', () => {
         context('urls', () => {
+          let errors = [];
+
           before(() => {
             server = createServer({
               cors: {
@@ -83,6 +87,16 @@ describe('@usvc/server', () => {
             server.get('/', (_req, res) => {
               res.json('ok');
             });
+            server.use((err, _req, res, _next) => {
+              errors.push(err);
+              res
+                .status(err.status ? err.status : 500)
+                .json(err.message);
+            });
+          });
+
+          afterEach(() => {
+            errors = [];
           });
 
           it('can have custom allowed urls', () =>
@@ -120,6 +134,9 @@ describe('@usvc/server', () => {
               results.forEach((result) => {
                 expect(result).to.deep.equal(true);
               });
+              expect(errors).to.have.length(1);
+              expect(errors[0]).to.have.property('message');
+              expect(errors[0].message).to.contain('remotehost');
             }),
           );
         });
@@ -163,6 +180,7 @@ describe('@usvc/server', () => {
           A: 1, B: '2', C: false,
         },
       };
+      let errors = [];
       let server;
 
       before(() => {
@@ -177,6 +195,16 @@ describe('@usvc/server', () => {
           req.session.views = (req.session.views || 0) + 1;
           res.json(req.session.views);
         });
+        server.use((err, _req, res, _next) => {
+          errors.push(err);
+          res
+            .status(err.status ? err.status : 500)
+            .json(err.message);
+        });
+      });
+
+      afterEach(() => {
+        errors = [];
       });
 
       it('is cors enabled', () =>
@@ -200,6 +228,9 @@ describe('@usvc/server', () => {
           results.forEach((result) => {
             expect(result).to.deep.equal(true);
           });
+          expect(errors).to.have.length(1);
+          expect(errors[0]).to.have.property('message');
+          expect(errors[0].message).to.contain('http://localhost');
         }),
       );
 
