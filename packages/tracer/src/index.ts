@@ -13,37 +13,6 @@ import {expressMiddleware} from 'zipkin-instrumentation-express';
 const {JSON_V2} = jsonEncoder;
 const {CountingSampler} = sampler;
 
-export interface TraceContext {
-  spanId: string;
-  parentId: string;
-  traceId: string;
-  sampled: option.IOption<boolean>;
-}
-
-export interface ExpressContextualizedRequest extends express.Request {
-  context: TraceContext;
-}
-
-export type ExpressContextualizedRequestHandler = (
-  req: ExpressContextualizedRequest,
-  res: express.Response,
-  next: express.NextFunction,
-) => void;
-
-export interface TracerObjectParameters {
-  headers?: object;
-  httpTimeout?: number;
-  sampleRate?: number;
-  traceId128Bit?: boolean;
-  url?: string;
-}
-
-export interface TracerObject {
-  getContext: () => ExplicitContext;
-  getExpressMiddleware: () => express.RequestHandler[];
-  getTracer: () => Tracer;
-}
-
 export function createTracer({
   sampleRate = 1,
   headers = {},
@@ -84,7 +53,7 @@ export function createTracer({
  * @param {ExplicitContext} ctxImpl
  * @return {express.RequestHandler}
  */
-function getContextProviderMiddleware(
+export function getContextProviderMiddleware(
   ctxImpl: ExplicitContext,
 ): ExpressContextualizedRequestHandler {
   return (req, res, next) => {
@@ -92,4 +61,35 @@ function getContextProviderMiddleware(
     req.context = {traceId, parentId, spanId, sampled};
     next();
   };
+}
+
+export interface TraceContext {
+  spanId: string;
+  parentId: string;
+  traceId: string;
+  sampled: option.IOption<boolean>;
+}
+
+export interface ExpressContextualizedRequest extends express.Request {
+  context: TraceContext;
+}
+
+export type ExpressContextualizedRequestHandler = (
+  req: ExpressContextualizedRequest,
+  res: express.Response,
+  next: express.NextFunction,
+) => void;
+
+export interface TracerObjectParameters {
+  headers?: object;
+  httpTimeout?: number;
+  sampleRate?: number;
+  traceId128Bit?: boolean;
+  url?: string;
+}
+
+export interface TracerObject {
+  getContext: () => ExplicitContext;
+  getExpressMiddleware: () => express.RequestHandler[];
+  getTracer: () => Tracer;
 }
