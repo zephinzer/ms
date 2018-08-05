@@ -1,6 +1,6 @@
 {
   "name": "@usvc/request",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Wrapped request module",
   "scripts": {
     "build": "npx tsc --project .",
@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@types/node-fetch": "^2.1.2",
-    "@usvc/tracer": "^0.1.1",
+    "@usvc/tracer": "^0.1.2",
     "superagent": "^3.8.3",
     "ts-node": "^7.0.0",
     "zipkin": "^0.13.0"
