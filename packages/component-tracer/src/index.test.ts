@@ -1,16 +1,32 @@
 import {expect} from 'chai';
+import * as sinon from 'sinon';
 import * as express from 'express';
 import * as supertest from 'supertest';
 import {createTracer} from '../src';
 
 describe('@joeir/tracer', () => {
+  let mockZipkin;
   let server;
   let tracer;
 
-  beforeEach(() => {
-    tracer = createTracer({
-      url: 'http://localhost:9411',
+  before((done) => {
+    const mockService = express();
+    mockService.post('/api/v2/spans', (req, res) => {
+      res.status(202).end();
     });
+    mockZipkin = mockService.listen(() => {
+      tracer = createTracer({
+        url: `http://localhost:${mockZipkin.address().port}`,
+      });
+      done();
+    });
+  });
+
+  after((done) => {
+    setTimeout(() => {
+      mockZipkin.close();
+      done();
+    }, 1000);
   });
 
   context('integration', () => {

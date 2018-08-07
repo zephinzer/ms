@@ -6,7 +6,6 @@
     "build": "npx tsc --project .",
     "lint": "npx tslint --config ../../tslint.yaml --project .",
     "test": "npx mocha --require ts-node/register \"./src/*.test.ts\" \"./src/**/*.test.ts\"",
-    "pretest": "docker-compose -f ../../provisioning/deployment/compose/test.yml up -d",
     "test:watch": "npm run test -- --watch --watch-extensions ts"
   },
   "keywords": [

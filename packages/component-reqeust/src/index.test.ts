@@ -7,6 +7,29 @@ import {createTracer} from '@usvc/tracer';
 const {expect} = chai;
 
 describe('@usvc/request', () => {
+  let mockZipkin;
+  let tracer;
+
+  before((done) => {
+    const mockService = express();
+    mockService.post('/api/v2/spans', (req, res) => {
+      res.status(202).end();
+    });
+    mockZipkin = mockService.listen(() => {
+      tracer = createTracer({
+        url: `http://localhost:${mockZipkin.address().port}`,
+      });
+      done();
+    });
+  });
+
+  after((done) => {
+    setTimeout(() => {
+      mockZipkin.close();
+      done();
+    }, 1000);
+  });
+
   context('integration', () => {
     context('with tracer', () => {
       let tracerA;

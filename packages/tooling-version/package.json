@@ -1,0 +1,42 @@
+{
+  "name": "@usvc/tooling-version-repo",
+  "version": "0.0.0",
+  "description": "Manage semver versioning for a repository using Git tags",
+  "keywords": [
+    "git",
+    "repository",
+    "tags",
+    "tools",
+    "version"
+  ],
+  "bin": {
+    "usvct-version": "./lib/index.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zephinzer/ms.git"
+  },
+  "author": "zephinzer",
+  "contributors": [
+    {
+      "name": "joseph",
+      "url": "https://github.com/zephinzer"
+    }
+  ],
+  "scripts": {
+    "build": "exit 0",
+    "lint": "eslint .",
+    "test": "exit 0",
+    "test:watch": "exit 0"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "semver": "^5.5.0"
+  },
+  "devDependencies": {
+    "commander": "^2.17.0"
+  }
+}

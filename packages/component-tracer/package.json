@@ -8,7 +8,6 @@
     "test": "npx mocha --require ts-node/register \"./src/*.test.ts\" \"./src/**/*.test.ts\"",
     "prestart": "npm run build",
     "start": "ts-node test",
-    "pretest": "docker-compose -f ../../provisioning/deployment/compose/test.yml up -d",
     "test:watch": "npm run test -- --watch --watch-extensions ts"
   },
   "publishConfig": {
