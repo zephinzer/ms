@@ -1,6 +1,6 @@
 {
   "name": "@usvc/tooling-version-repo",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Manage semver versioning for a repository using Git tags",
   "keywords": [
     "git",
